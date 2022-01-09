@@ -15,7 +15,7 @@ def full_submission_path(filename):
         raise ValueError("bad submission file path: " + filename)
 
 
-def count_regexp_matches_in_file(regexp, filename, strip_comments=True):
+def count_regexp_matches(regexp, filename, strip_comments=True):
     full_path = full_submission_path(filename)
     if not os.path.exists(full_path):
         raise FileNotFoundError("no such file: " + full_path)
