@@ -1,18 +1,11 @@
-import subprocess
 import types
 import unittest
-import os
-import re
 import contextlib
 import io
 import sys
-from . import remove_comments
+from functools import wraps
+from . import utils
 
-SUBMISSION_BASE = '/autograder/submission'
-
-# The code below provides a subclass of unittest.TestCase that includes
-# some additional assertions for grading and ensures that tests will
-# be executed in the order they are declared.
 
 _TEST_ORDER = {}
 
@@ -34,14 +27,51 @@ def test_compare(a, b):
         return [1, -1][a < b]
 
 
+def _check_required(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if hasattr(self.__class__, '_FAILED_REQUIRED_TEST'):
+            self.fail("Failed required test: {}".format(self._FAILED_REQUIRED_TEST))
+            result = None
+        else:
+            result = func(self, *args, **kwargs)
+        return result
+    return wrapper
+
+
+def required():
+    """Used to decorate required test method.  If a required method is
+    failed then all of the following methods will fail as well.
+
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            try:
+                result = func(self, *args, **kwargs)
+            except Exception as e:
+                self.__class__._FAILED_REQUIRED_TEST = func.__doc__
+                result = None
+                raise e.__class__(str(e) + "\n This test was required.  All of the following tests will fail automatically.")
+            return result
+        return wrapper
+    return decorator
+
+
 # https://stackoverflow.com/questions/8245135/python-decorate-all-methods-of-subclass-and-provide-means-to-override
 
 class OrderAllTestsMeta(type):
+    """Decorate every method so that they will be ordered during testing,
+    and they will respect the 'required' decorator.
+
+    """
+
     def __new__(cls, name, bases, local):
+
         for attr in local:
             value = local[attr]
             if isinstance(value, types.FunctionType):
-                local[attr] = _order(value)
+                local[attr] = _check_required(_order(value))
         return type.__new__(cls, name, bases, local)
 
 
@@ -56,7 +86,7 @@ class _JmuTestCase(unittest.TestCase):
         try:
             f = io.StringIO()
             with contextlib.redirect_stdout(f):
-                exec(open(full_submission_path(filename)).read())
+                exec(open(utils.full_submission_path(filename)).read())
             actual = f.getvalue()
             show_in = string_in.encode('unicode_escape').decode()
             message = "Input was: '{}'".format(show_in)
@@ -74,48 +104,7 @@ class JmuTestCase(_JmuTestCase, metaclass=OrderAllTestsMeta):
 
     unittest.defaultTestLoader.sortTestMethodsUsing = test_compare
 
+    They will also respect the @required decorator.
+
     """
     pass
-
-def full_submission_path(filename):
-
-    if os.path.dirname(filename) == SUBMISSION_BASE:
-        return filename
-    elif os.path.dirname(filename) == '':
-        return os.path.join(SUBMISSION_BASE, filename)
-    else:
-        raise ValueError("bad submission file path: " + filename)
-
-
-def count_regexp_matches_in_file(regexp, filename, strip_comments=True):
-    full_path = full_submission_path(filename)
-    if not os.path.exists(full_path):
-        raise FileNotFoundError("no such file: " + full_path)
-
-    if strip_comments:
-        contents = remove_comments.remove_comments(full_path)
-    else:
-        with open(full_path, 'r') as f:
-            contents = f.read()
-
-    matches = re.findall(regexp, contents)
-    return len(matches)
-
-
-def run_flake8(filename):
-    full_path = full_submission_path(filename)
-    if not os.path.exists(full_path):
-        raise FileNotFoundError("no such file: " + full_path)
-
-    proc = subprocess.Popen(['flake8',
-                             '--config=/autograder/source/flake8.cfg',
-                             full_path],
-                            stdout=subprocess.PIPE)
-    proc.wait()
-    return proc.stdout.read().decode().strip()
-
-
-if __name__ == "__main__":
-
-    print(count_regexp_matches_in_file('open', 'jmu_gradescope_utils.py'))
-    print(full_submission_path('/autograder/submission/tree.py'))
