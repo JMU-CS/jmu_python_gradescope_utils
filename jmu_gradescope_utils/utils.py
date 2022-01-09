@@ -15,7 +15,7 @@ def full_submission_path(filename):
         raise ValueError("bad submission file path: " + filename)
 
 
-def count_regexp_matches(regexp, filename, strip_comments=True):
+def count_regex_matches(regex, filename, strip_comments=True):
     full_path = full_submission_path(filename)
     if not os.path.exists(full_path):
         raise FileNotFoundError("no such file: " + full_path)
@@ -26,7 +26,7 @@ def count_regexp_matches(regexp, filename, strip_comments=True):
         with open(full_path, 'r') as f:
             contents = f.read()
 
-    matches = re.findall(regexp, contents)
+    matches = re.findall(regex, contents)
     return len(matches)
 
 
@@ -49,5 +49,5 @@ def run_flake8(filename):
 
 if __name__ == "__main__":
 
-    print(count_regexp_matches_in_file('open', 'jmu_gradescope_utils.py'))
+    print(count_regex_matches_in_file('open', 'jmu_gradescope_utils.py'))
     print(full_submission_path('/autograder/submission/tree.py'))
