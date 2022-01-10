@@ -96,6 +96,23 @@ class _JmuTestCase(unittest.TestCase):
         finally:
             sys.stdin = oldstdin
 
+    def assertPassesPep8(self, filename):
+        output = jmu_gradescope_utils.run_flake8(filename)
+        if len(output) != 0:
+            self.fail("Submission does not pass pep8 checks:\n" + output)
+        print('Submission passes all formatting checks!')
+
+    def assertRequiredFilesPresent(self, required_files):
+        missing_files = check_submitted_files(required_files)
+        for path in missing_files:
+            print('Missing {0}'.format(path))
+        self.assertEqual(len(missing_files), 0, 'Missing some required files!')
+        print('All required files submitted!')
+
+    def assertOutputCorrect(self, filename, string_in, expected):
+        self.assertScriptOutputEqual(filename, string_in, expected)
+        print('Correct output:\n' + expected)
+
 
 class JmuTestCase(_JmuTestCase, metaclass=OrderAllTestsMeta):
     """Test methods declared within subclasses will be executed in the
