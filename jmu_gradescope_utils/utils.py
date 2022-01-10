@@ -3,7 +3,12 @@ import os
 import re
 from . import remove_comments
 
-SUBMISSION_BASE = '/autograder/submission'
+if 'JMU_GRADESCOPE_BASE' in os.environ:
+    GRADESCOPE_BASE = os.environ['JMU_GRADESCOPE_BASE']
+else:
+    GRADESCOPE_BASE = '/autograder'
+
+SUBMISSION_BASE = os.path.join(GRADESCOPE_BASE, 'submission')
 
 def full_submission_path(filename):
 
