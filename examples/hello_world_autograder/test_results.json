@@ -1,0 +1,26 @@
+{
+    "tests": [
+        {
+            "name": "Check submitted files",
+            "score": 0,
+            "max_score": 0,
+            "output": "All required files submitted!\n"
+        },
+        {
+            "name": "PEP 8 checks.",
+            "score": 2,
+            "max_score": 2,
+            "output": "Submission passes all formatting checks!\n"
+        },
+        {
+            "name": "hello_world.py output checks.",
+            "score": 8,
+            "max_score": 8,
+            "output": "Correct output:\nHello World!\n\n"
+        }
+    ],
+    "leaderboard": [],
+    "visibility": "visible",
+    "execution_time": "0.14",
+    "score": 10
+}
