@@ -52,6 +52,27 @@ def run_flake8(filename):
     return proc.stdout.read().decode().strip()
 
 
+
+# This is copied directly from:
+# https://github.com/gradescope/gradescope-utils/blob/master/gradescope_utils/autograder_utils/files.py
+# Copied here so that SUBMISSION_BASE default will respect
+# 'JMU_GRADESCOPE_BASE'
+
+def check_submitted_files(paths, base=SUBMISSION_BASE):
+    """Checks that the files in the given list exist in the student's submission.
+
+    Returns a list of missing files.
+
+    eg. check_submitted_files(['src/calculator.py'])
+    """
+    missing_files = []
+    for path in paths:
+        target_path = os.path.join(base, path)
+        if not os.path.isfile(target_path):
+            missing_files.append(path)
+    return missing_files
+
+
 if __name__ == "__main__":
 
     print(count_regex_matches_in_file('open', 'jmu_gradescope_utils.py'))
