@@ -1,8 +1,10 @@
 import types
 import unittest
-import contextlib
-import io
-import sys
+import tempfile
+import subprocess
+import os
+import shutil
+import re
 from functools import wraps
 from . import utils
 
@@ -79,22 +81,36 @@ class _JmuTestCase(unittest.TestCase):
     """ Additional useful assertions for grading. """
 
     def assertScriptOutputEqual(self, filename, string_in, expected,
-                                msg=None):
-        oldstdin = sys.stdin
-        sys.stdin = io.StringIO(string_in)
+                                variables=None, msg=None):
 
+        tmpdir = tempfile.mkdtemp()
         try:
-            f = io.StringIO()
-            with contextlib.redirect_stdout(f):
-                exec(open(utils.full_submission_path(filename)).read())
-            actual = f.getvalue()
+            new_file_name = os.path.join(tmpdir, os.path.basename(filename))
+            with open(utils.full_submission_path(filename), 'r') as f:
+                new_file = f.read()
+
+            if variables is not None:
+
+                for var in variables:
+                    regexp = '^(\s*){}\s*(?=\=)(?!==).*\n'.format(var)
+                    replace = "\\1{} = {}\n".format(var, repr(variables[var]))
+                    new_file = re.sub(regexp, replace, new_file)
+
+            with open(os.path.join(new_file_name), 'w') as f:
+                f.write(new_file)
+
+            proc = subprocess.Popen(['python3', new_file_name],
+                                    stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE)
+            actual = proc.communicate(input=string_in.encode())[0]
+
             show_in = string_in.encode('unicode_escape').decode()
             message = "Input was: '{}'".format(show_in)
             if msg is not None:
                 message += "\n" + msg
-            self.assertEqual(actual, expected, message)
+            self.assertEqual(actual.decode(), expected, message)
         finally:
-            sys.stdin = oldstdin
+            shutil.rmtree(tmpdir)
 
     def assertPassesPep8(self, filename):
         output = utils.run_flake8(filename)
@@ -109,8 +125,10 @@ class _JmuTestCase(unittest.TestCase):
         self.assertEqual(len(missing_files), 0, 'Missing some required files!')
         print('All required files submitted!')
 
-    def assertOutputCorrect(self, filename, string_in, expected):
-        self.assertScriptOutputEqual(filename, string_in, expected)
+    def assertOutputCorrect(self, filename, string_in, expected,
+                            variables=None):
+        self.assertScriptOutputEqual(filename, string_in, expected,
+                                     variables=variables)
         print('Correct output:\n' + expected)
 
 
