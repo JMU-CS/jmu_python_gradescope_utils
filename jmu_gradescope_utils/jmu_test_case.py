@@ -97,13 +97,13 @@ class _JmuTestCase(unittest.TestCase):
             sys.stdin = oldstdin
 
     def assertPassesPep8(self, filename):
-        output = jmu_gradescope_utils.run_flake8(filename)
+        output = utils.run_flake8(filename)
         if len(output) != 0:
             self.fail("Submission does not pass pep8 checks:\n" + output)
         print('Submission passes all formatting checks!')
 
     def assertRequiredFilesPresent(self, required_files):
-        missing_files = check_submitted_files(required_files)
+        missing_files = utils.check_submitted_files(required_files)
         for path in missing_files:
             print('Missing {0}'.format(path))
         self.assertEqual(len(missing_files), 0, 'Missing some required files!')
