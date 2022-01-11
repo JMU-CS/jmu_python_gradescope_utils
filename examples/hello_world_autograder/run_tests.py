@@ -13,5 +13,6 @@ unittest.defaultTestLoader.sortTestMethodsUsing = jmu_gradescope_utils.test_comp
 if __name__ == '__main__':
     suite = unittest.defaultTestLoader.discover('tests')
     outfile = os.path.join(GRADESCOPE_BASE, 'results', 'results.json')
+
     with open(outfile, 'w') as f:
         JSONTestRunner(visibility='visible', stream=f).run(suite)
