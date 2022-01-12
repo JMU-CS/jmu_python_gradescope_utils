@@ -92,8 +92,8 @@ class _JmuTestCase(unittest.TestCase):
             if variables is not None:
 
                 for var in variables:
-                    regexp = '^(\s*){}\s*(?=\=)(?!==).*\n'.format(var)
-                    replace = "\\1{} = {}\n".format(var, repr(variables[var]))
+                    regexp = '(^|\n)( *){}\s*(?=\=)(?!==).*(\n|$)'.format(var)
+                    replace = "\\1\\2{} = {}\\3".format(var, repr(variables[var]))
                     new_file = re.sub(regexp, replace, new_file)
 
             with open(os.path.join(new_file_name), 'w') as f:
