@@ -44,8 +44,9 @@ def run_flake8(filename):
     if not os.path.exists(full_path):
         raise FileNotFoundError("no such file: " + full_path)
 
+    config_path = os.path.join(GRADESCOPE_BASE, 'source', 'flake8.cfg')
     proc = subprocess.Popen(['flake8',
-                             '--config=/autograder/source/flake8.cfg',
+                             '--config={}'.format(config_path),
                              full_path],
                             stdout=subprocess.PIPE)
     proc.wait()
