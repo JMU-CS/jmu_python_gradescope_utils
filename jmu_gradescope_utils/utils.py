@@ -2,6 +2,7 @@ import subprocess
 import os
 import re
 from . import remove_comments
+import tempfile
 
 if 'JMU_GRADESCOPE_BASE' in os.environ:
     GRADESCOPE_BASE = os.environ['JMU_GRADESCOPE_BASE']
@@ -52,6 +53,27 @@ def run_flake8(filename):
     proc.wait()
     return proc.stdout.read().decode().strip()
 
+
+def replace_variables(filename, variables=None, new_name=None):
+    tmpdir = tempfile.mkdtemp()
+    if new_name is not None:
+        new_file_name = os.path.join(tmpdir, new_name)
+    else:
+        new_file_name = os.path.join(tmpdir, os.path.basename(filename))
+    with open(full_submission_path(filename), 'r') as f:
+        new_file = f.read()
+
+    if variables is not None:
+
+        for var in variables:
+            regexp = '(^|\n)( *){}\s*(?=\=)(?!==).*(\n|$)'.format(var)
+            replace = "\\1\\2{} = {}\\3".format(var, repr(variables[var]))
+            new_file = re.sub(regexp, replace, new_file)
+
+    with open(os.path.join(new_file_name), 'w') as f:
+        f.write(new_file)
+
+    return (tmpdir, new_file_name)
 
 
 # This is copied directly from:

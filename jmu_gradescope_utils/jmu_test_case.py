@@ -7,6 +7,8 @@ import shutil
 import re
 from functools import wraps
 from . import utils
+import sys
+from importlib import import_module
 
 
 _TEST_ORDER = {}
@@ -80,24 +82,14 @@ class OrderAllTestsMeta(type):
 class _JmuTestCase(unittest.TestCase):
     """ Additional useful assertions for grading. """
 
+    # counts the number of dynamic modules created
+    module_count = 0
+
     def assertScriptOutputEqual(self, filename, string_in, expected,
                                 variables=None, msg=None):
-
-        tmpdir = tempfile.mkdtemp()
+        tmpdir = None
         try:
-            new_file_name = os.path.join(tmpdir, os.path.basename(filename))
-            with open(utils.full_submission_path(filename), 'r') as f:
-                new_file = f.read()
-
-            if variables is not None:
-
-                for var in variables:
-                    regexp = '(^|\n)( *){}\s*(?=\=)(?!==).*(\n|$)'.format(var)
-                    replace = "\\1\\2{} = {}\\3".format(var, repr(variables[var]))
-                    new_file = re.sub(regexp, replace, new_file)
-
-            with open(os.path.join(new_file_name), 'w') as f:
-                f.write(new_file)
+            tmpdir, new_file_name = utils.replace_variables(filename, variables)
 
             proc = subprocess.Popen(['python3', new_file_name],
                                     stdin=subprocess.PIPE,
@@ -110,7 +102,9 @@ class _JmuTestCase(unittest.TestCase):
                 message += "\n" + msg
             self.assertEqual(actual.decode(), expected, message)
         finally:
-            shutil.rmtree(tmpdir)
+            if tmpdir is not None:
+                shutil.rmtree(tmpdir)
+
 
     def assertPassesPep8(self, filename):
         output = utils.run_flake8(filename)
@@ -130,6 +124,20 @@ class _JmuTestCase(unittest.TestCase):
         self.assertScriptOutputEqual(filename, string_in, expected,
                                      variables=variables)
         print('Correct output:\n' + expected)
+
+    def run_with_substitution(self, filename, variables, func):
+        """substitute variable values, then load a module and execute the given function `func`"""
+        _JmuTestCase.module_count = _JmuTestCase.module_count + 1
+        short_filename = filename
+        if filename[-3:] == '.py':
+            short_filename = filename[0:-3]
+        new_module_name = short_filename + "_" + str(_JmuTestCase.module_count)
+        (tmpdir, new_file_name) = utils.replace_variables(filename, variables=variables, new_name=new_module_name + ".py")
+        # insert the new temporary directory into the system module load path
+        sys.path.insert(1, tmpdir)
+        # load the module
+        dynamic_module = import_module(new_module_name)
+        func(dynamic_module)
 
 
 class JmuTestCase(_JmuTestCase, metaclass=OrderAllTestsMeta):
