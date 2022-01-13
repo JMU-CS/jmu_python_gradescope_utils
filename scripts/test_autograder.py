@@ -42,6 +42,8 @@ def main():
                 './test_results.json')
 
     shutil.rmtree(tmpdir)
+    
+    sys.exit(p.returncode)
 
 if __name__ == "__main__":
     main()
