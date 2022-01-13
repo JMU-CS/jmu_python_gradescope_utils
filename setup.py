@@ -13,5 +13,6 @@ setup(
         'flake8',
         'pep8-naming'
     ],
+    scripts=['scripts/test_autograder.py']
 
 )

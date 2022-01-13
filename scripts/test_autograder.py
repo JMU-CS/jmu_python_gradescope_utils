@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """This script can be used to test-run the Gradescope autograder
 scripts locally. (As long as those scripts respect the
 'JMU_GRADESCOPE_BASE' environment variable.)
@@ -17,19 +18,30 @@ import subprocess
 import os
 import shutil
 
-tmpdir = tempfile.mkdtemp()
+def main():
 
-shutil.copytree(sys.argv[1], os.path.join(tmpdir, 'submission')) 
-shutil.copytree('./', os.path.join(tmpdir, 'source')) 
-os.mkdir(os.path.join(tmpdir, 'results'))
+    if len(sys.argv) < 2:
+        print("Usage:")
+        print("test_autograder.py /path/to/submission/folder/")
+        print("\nScript must be run from within the autograder folder.")
+        return
 
-my_env = os.environ.copy()
-my_env["JMU_GRADESCOPE_BASE"] = tmpdir
+    tmpdir = tempfile.mkdtemp()
 
-p = subprocess.Popen('./run_autograder', env=my_env)
-p.wait()
+    shutil.copytree(sys.argv[1], os.path.join(tmpdir, 'submission')) 
+    shutil.copytree('./', os.path.join(tmpdir, 'source')) 
+    os.mkdir(os.path.join(tmpdir, 'results'))
 
-shutil.copy(os.path.join(tmpdir, 'results', 'results.json'),
-            './test_results.json')
+    my_env = os.environ.copy()
+    my_env["JMU_GRADESCOPE_BASE"] = tmpdir
 
-shutil.rmtree(tmpdir)
+    p = subprocess.Popen('./run_autograder', env=my_env)
+    p.wait()
+
+    shutil.copy(os.path.join(tmpdir, 'results', 'results.json'),
+                './test_results.json')
+
+    shutil.rmtree(tmpdir)
+
+if __name__ == "__main__":
+    main()
