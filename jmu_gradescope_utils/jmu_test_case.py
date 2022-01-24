@@ -86,7 +86,7 @@ class _JmuTestCase(unittest.TestCase):
     module_count = 0
 
     def assertScriptOutputEqual(self, filename, string_in, expected,
-                                variables=None, msg=None):
+                                variables=None, msg=None, processor=None):
         tmpdir = None
         try:
             tmpdir, new_file_name = utils.replace_variables(filename, variables)
@@ -100,7 +100,10 @@ class _JmuTestCase(unittest.TestCase):
             message = "Input was: '{}'".format(show_in)
             if msg is not None:
                 message += "\n" + msg
-            self.assertEqual(actual.decode(), expected, message)
+            actual_text = actual.decode()
+            if processor:
+                actual_text = processor(actual_text)
+            self.assertEqual(actual_text, expected, message)
         finally:
             if tmpdir is not None:
                 shutil.rmtree(tmpdir)
@@ -120,9 +123,9 @@ class _JmuTestCase(unittest.TestCase):
         print('All required files submitted!')
 
     def assertOutputCorrect(self, filename, string_in, expected,
-                            variables=None):
+                            variables=None, processor=None):
         self.assertScriptOutputEqual(filename, string_in, expected,
-                                     variables=variables)
+                                     variables=variables, processor=processor)
         print('Correct output:\n' + expected)
 
     def run_with_substitution(self, filename, variables, func):
