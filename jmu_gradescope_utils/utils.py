@@ -3,6 +3,9 @@ import os
 import re
 from . import remove_comments
 import tempfile
+import io
+import sys
+from contextlib import contextmanager
 
 if 'JMU_GRADESCOPE_BASE' in os.environ:
     GRADESCOPE_BASE = os.environ['JMU_GRADESCOPE_BASE']
@@ -95,6 +98,25 @@ def check_submitted_files(paths, base=SUBMISSION_BASE):
             missing_files.append(path)
     return missing_files
 
+@contextmanager
+def suppress_IO(in_string):
+    """
+    Suppresses standard io when running a block of code, feeding in the given in_string as input
+    and squelching all output. Use as
+
+    ```with suppress_IO("desired input"):
+            # my code block
+    ```
+    """
+    text_in = io.StringIO(in_string)
+    text_out = io.StringIO()
+    oldout = sys.stdout
+    oldin = sys.stdin
+    sys.stdout = text_out
+    sys.stdin = text_in
+    yield
+    sys.stdout = oldout
+    sys.stdin = oldin
 
 if __name__ == "__main__":
 
