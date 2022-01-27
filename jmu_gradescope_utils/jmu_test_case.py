@@ -142,6 +142,10 @@ class _JmuTestCase(unittest.TestCase):
         dynamic_module = import_module(new_module_name)
         func(dynamic_module)
 
+    def assertMatchCount(self, filename, regex, num_matches, msg=None):
+        count = utils.count_regex_matches(regex, filename)
+        self.assertEqual(num_matches, count, msg=msg)
+
 
 class JmuTestCase(_JmuTestCase, metaclass=OrderAllTestsMeta):
     """Test methods declared within subclasses will be executed in the
