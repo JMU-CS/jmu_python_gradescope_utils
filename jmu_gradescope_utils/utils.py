@@ -118,6 +118,32 @@ def suppress_IO(in_string):
     sys.stdout = oldout
     sys.stdin = oldin
 
+class IOContext:
+    """
+    Context manager that allows specifying simulated keyboard input, and captures text output.
+
+    Use like so:
+
+    context = IOContext("program input")
+    with context:
+        # my code block
+    output = context.output
+    """
+    def __init__(self, in_string):
+        self.text_in = io.StringIO(in_string)
+        self.text_out = io.StringIO()
+
+    def __enter__(self):
+        self.oldout = sys.stdout
+        self.oldin = sys.stdin
+        sys.stdout = self.text_out
+        sys.stdin = self.text_in
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        sys.stdout = self.oldout
+        sys.stdin = self.oldin
+        self.output = self.text_out.getvalue()
+
 if __name__ == "__main__":
 
     print(count_regex_matches_in_file('open', 'jmu_gradescope_utils.py'))
