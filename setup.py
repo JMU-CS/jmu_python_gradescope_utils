@@ -11,7 +11,10 @@ setup(
     description='Python Gradescope utilities',
     install_requires=[
         'flake8',
-        'pep8-naming'
+        'pep8-naming',
+        'flake8-docstrings',
+        'flake8-rst-docstrings',
+        'darglint'
     ],
     scripts=['scripts/test_autograder.py']
 
