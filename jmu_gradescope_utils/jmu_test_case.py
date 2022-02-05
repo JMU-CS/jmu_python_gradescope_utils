@@ -115,6 +115,12 @@ class _JmuTestCase(unittest.TestCase):
             self.fail("Submission does not pass pep8 checks:\n" + output)
         print('Submission passes all formatting checks!')
 
+    def assertDocstringsCorrect(self, filename):
+        output = utils.run_flake8_docstring(filename)
+        if len(output) != 0:
+            self.fail("Submission does not pass docstring checks:\n" + output)
+        print('Submission passes all docstring checks!')
+
     def assertRequiredFilesPresent(self, required_files):
         missing_files = utils.check_submitted_files(required_files)
         for path in missing_files:

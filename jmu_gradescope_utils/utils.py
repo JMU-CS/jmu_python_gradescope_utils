@@ -39,7 +39,7 @@ def count_regex_matches(regex, filename, strip_comments=True):
     return len(matches)
 
 
-def run_flake8(filename):
+def run_flake8(filename, config='flake8.cfg'):
     """Return the output of executing flake8.  Should be an empty string
     if no formatting issues were found.
 
@@ -48,13 +48,17 @@ def run_flake8(filename):
     if not os.path.exists(full_path):
         raise FileNotFoundError("no such file: " + full_path)
 
-    config_path = os.path.join(GRADESCOPE_BASE, 'source', 'flake8.cfg')
+    config_path = os.path.join(GRADESCOPE_BASE, 'source', config)
     proc = subprocess.Popen(['flake8',
                              '--config={}'.format(config_path),
                              full_path],
                             stdout=subprocess.PIPE)
     proc.wait()
     return proc.stdout.read().decode().strip()
+
+
+def run_flake8_docstring(filename):
+    return run_flake8(filename, config='docstring.cfg')
 
 
 def replace_variables(filename, variables=None, new_name=None):
