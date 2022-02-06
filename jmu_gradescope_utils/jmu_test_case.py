@@ -93,16 +93,25 @@ class _JmuTestCase(unittest.TestCase):
 
             proc = subprocess.Popen(['python3', new_file_name],
                                     stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE)
-            actual = proc.communicate(input=string_in.encode())[0]
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+            actual, stderr = proc.communicate(input=string_in.encode())
+            actual_text = actual.decode()
+            if processor:
+                actual_text = processor(actual_text)
+            stderr_text = stderr.decode()
+
+            if len(stderr) > 0:
+                stderr_text = stderr_text.replace(tmpdir + "/", '')
+                err_msg = "Error during script execution:\n{}".format(stderr_text)
+                out_msg = "\nOutput before failure:\n{}".format(actual_text)
+                self.fail(err_msg + out_msg)
 
             show_in = string_in.encode('unicode_escape').decode()
             message = "Input was: '{}'".format(show_in)
             if msg is not None:
                 message += "\n" + msg
-            actual_text = actual.decode()
-            if processor:
-                actual_text = processor(actual_text)
+
             self.assertEqual(actual_text, expected, message)
         finally:
             if tmpdir is not None:
