@@ -128,11 +128,13 @@ class _JmuTestCase(unittest.TestCase):
 
     def assertNoConditionals(self, filename, msg=None):
         if_regex = "(^|(\r\n?|\n))\s*if.*:\s*(#.*)*($|(\r\n?|\n))"
+        main_regex = "(^|(\r\n?|\n))\s*if\s*__name__.*:\s*(#.*)*($|(\r\n?|\n))"
         count = utils.count_regex_matches(if_regex, filename)
+        main_count = utils.count_regex_matches(main_regex, filename)
         message = f"It looks like the file {filename} contains at least one if statement."
         if msg is not None:
             message += f"\n{msg}"
-        if count > 0:
+        if count > main_count:
             self.fail(message)
 
     def assertPassesPep8(self, filename):
