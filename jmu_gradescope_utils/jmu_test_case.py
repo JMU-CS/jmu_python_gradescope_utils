@@ -117,6 +117,23 @@ class _JmuTestCase(unittest.TestCase):
             if tmpdir is not None:
                 shutil.rmtree(tmpdir)
 
+    def assertNoLoops(self, filename, msg=None):
+        loop_regex = "(^|(\r\n?|\n))\s*(for|while).*:\s*(#.*)*($|(\r\n?|\n))"
+        count = utils.count_regex_matches(loop_regex, filename)
+        message = f"It looks like the file {filename} contains at least one loop."
+        if msg is not None:
+            message += f"\n{msg}"
+        if count > 0:
+            self.fail(message)
+
+    def assertNoConditionals(self, filename, msg=None):
+        if_regex = "(^|(\r\n?|\n))\s*if.*:\s*(#.*)*($|(\r\n?|\n))"
+        count = utils.count_regex_matches(if_regex, filename)
+        message = f"It looks like the file {filename} contains at least one if statement."
+        if msg is not None:
+            message += f"\n{msg}"
+        if count > 0:
+            self.fail(message)
 
     def assertPassesPep8(self, filename):
         output = utils.run_flake8(filename)
