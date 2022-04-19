@@ -60,30 +60,33 @@ def run_student_tests(print_feedback=True, show_traces=True,
     return succeeded
 
 
-def check_coverage(checked_files, branch=False, print_feedback=True,
+def check_coverage(checked_files, branch=False, target_percentage=100.0,
+                   print_feedback=True,
                    show_details=True, success_required=True):
     """Check code coverage for student-submitted unit tests.
 
     Args:
         checked_files (list): A list of file names for the files that should
                               be covered by the tests.
+        target_percentage (float): The target coverage percentage for each
+                                   file.
         branch (bool): True if branch coverage should be checked, False for
                        statement coverage only.
         print_feedback (bool): True if success or failure message should be
                                printed.
         show_details (bool): True if a detailed coverage report should be
-                             printed in the case that coverage is not 100%.
+                             printed in the case that coverage is less than
+                             target.
         success_required: True if an AssertionError should be raised in the
                           case of insufficient coverage.
 
     Returns:
-        bool: True if full coverage, False otherwise.
+        bool: True if coverage hits target, False otherwise.
 
     Raises:
-        AssertionError if success_required, and less than full coverage.
+        AssertionError if success_required, and coverage is below target.
 
     """
-
     # Run the tests while checking coverage...
     cov = Coverage(branch=branch)
     cov.start()
@@ -95,43 +98,63 @@ def check_coverage(checked_files, branch=False, print_feedback=True,
         del sys.modules[module]
         importlib.import_module(module)
 
-    passed_tests = run_student_tests(print_feedback=False,
-                                     success_required=False)
+    run_student_tests(print_feedback=False, success_required=False)
     cov.stop()
 
-    # Now check the coverage...
+    # Get coverage data as a dictionary...
     tmp_json = tempfile.mkstemp(suffix='.json', text=True)[1]
     cov.json_report(outfile=tmp_json)
     with open(tmp_json, 'r') as f:
         data = json.load(f)
     os.remove(tmp_json)
 
+    adequate_coverage = True
     full_coverage = True
     for checked_file in checked_files:
+        if data['files'][checked_file]['summary']['percent_covered'] < target_percentage:
+            adequate_coverage = False
         if data['files'][checked_file]['summary']['percent_covered_display'] != '100':
             full_coverage = False
 
-    if not full_coverage:
-        if print_feedback:
-            print("Test coverage is less than 100%.")
+    # Get the coverage report in table form.
+    if show_details:
+        tmp_report = tempfile.mkstemp(suffix='.txt', text=True)[1]
+        with open(tmp_report, 'w') as f:
+            cov.report(morfs=checked_files, file=f)
+        with open(tmp_report, 'r') as f:
+            report_txt = f.read()
+        os.remove(tmp_report)
+
+    if print_feedback:
+        files_str = ", ".join(checked_files)
+        if full_coverage:
+            if branch:
+                print(f"100% statement and branch coverage of: {files_str}")
+            else:
+                print(f"100% statement coverage of: {files_str}")
+
+        elif adequate_coverage:
+            if branch:
+                print(f"Sufficient statement and branch coverage of: {files_str}")
+            else:
+                print(f"Sufficient statement coverage of: {files_str}")
+
             if show_details:
-                tmp_report = tempfile.mkstemp(suffix='.txt', text=True)[1]
-                with open(tmp_report, 'w') as f:
-                    cov.report(morfs=checked_files, file=f)
-                with open(tmp_report, 'r') as f:
-                    print(f.read())
-                os.remove(tmp_report)
-        if success_required:
-            raise AssertionError("Coverage failed.")
-    else:
-        if print_feedback and branch:
-            print("100% statement and branch coverage of: " +
-                  ", ".join(checked_files))
-        elif print_feedback:
-            print("100% statement coverage of: " +
-                  ", ".join(checked_files))
-            
-    return full_coverage
+                print(report_txt)
+
+        else:
+            if len(checked_files) > 1:
+                print(f"Test coverage is less than target of {target_percentage}% for at least one file.")
+            else:
+                print(f"Test coverage is less than target of {target_percentage}%.")
+
+            if show_details:
+                print(report_txt)
+
+    if success_required and not adequate_coverage:
+        raise AssertionError("Coverage failed.")
+
+    return adequate_coverage
 
 
 if __name__ == "__main__":
