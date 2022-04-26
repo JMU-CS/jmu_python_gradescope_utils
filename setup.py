@@ -11,6 +11,7 @@ setup(
     description='Python Gradescope utilities',
     install_requires=[
         'flake8',
+        'coverage',
         'pep8-naming',
         'flake8-docstrings',
         'flake8-rst-docstrings',
