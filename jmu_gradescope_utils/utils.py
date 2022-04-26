@@ -13,15 +13,30 @@ else:
     GRADESCOPE_BASE = '/autograder'
 
 SUBMISSION_BASE = os.path.join(GRADESCOPE_BASE, 'submission')
+SOURCE_BASE = os.path.join(GRADESCOPE_BASE, 'source')
 
-def full_submission_path(filename):
+def full_submission_path(filename=None):
 
-    if os.path.dirname(filename) == SUBMISSION_BASE:
+    if filename is None:
+        return SUBMISSION_BASE
+    elif os.path.dirname(filename) == SUBMISSION_BASE:
         return filename
     elif os.path.dirname(filename) == '':
         return os.path.join(SUBMISSION_BASE, filename)
     else:
         raise ValueError("bad submission file path: " + filename)
+
+
+def full_source_path(filename=None):
+
+    if filename is None:
+        return SOURCE_BASE
+    elif os.path.dirname(filename) == SOURCE_BASE:
+        return filename
+    elif os.path.dirname(filename) == '':
+        return os.path.join(SOURCE_BASE, filename)
+    else:
+        raise ValueError("bad source file path: " + filename)
 
 
 def count_regex_matches(regex, filename, strip_comments=True):

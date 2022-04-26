@@ -89,20 +89,30 @@ class _JmuTestCase(unittest.TestCase):
                                 variables=None, msg=None, processor=None):
         tmpdir = None
         try:
-            tmpdir, new_file_name = utils.replace_variables(filename, variables)
+            tmpdir, new_file_name = utils.replace_variables(filename,
+                                                            variables)
 
-            proc = subprocess.Popen(['python3', new_file_name],
+            # Make a clean backup of the original submission:
+            shutil.copy(utils.full_submission_path(filename),
+                        os.path.join(tmpdir, "__tmp_backup.py"))
+
+            # Replace the original submission in source:
+            shutil.copy(new_file_name, utils.full_source_path(filename))
+
+            proc = subprocess.Popen(['python3',
+                                     utils.full_source_path(filename)],
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE)
             actual, stderr = proc.communicate(input=string_in.encode())
             actual_text = actual.decode()
+
             if processor:
                 actual_text = processor(actual_text)
             stderr_text = stderr.decode()
 
             if len(stderr) > 0:
-                stderr_text = stderr_text.replace(tmpdir + "/", '')
+                stderr_text = stderr_text.replace(utils.full_source_path() + "/" , '')
                 err_msg = "Error during script execution:\n{}".format(stderr_text)
                 out_msg = "\nOutput before failure:\n{}".format(actual_text)
                 self.fail(err_msg + out_msg)
@@ -115,6 +125,9 @@ class _JmuTestCase(unittest.TestCase):
             self.assertEqual(actual_text, expected, message)
         finally:
             if tmpdir is not None:
+                # Restore the original submission in source:
+                shutil.copy(os.path.join(tmpdir, "__tmp_backup.py"),
+                            utils.full_source_path(filename))
                 shutil.rmtree(tmpdir)
 
     def assertNoLoops(self, filename, msg=None):
