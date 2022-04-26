@@ -86,7 +86,8 @@ class _JmuTestCase(unittest.TestCase):
     module_count = 0
 
     def assertScriptOutputEqual(self, filename, string_in, expected,
-                                variables=None, msg=None, processor=None):
+                                variables=None, args="", msg=None,
+                                processor=None):
         tmpdir = None
         try:
             tmpdir, new_file_name = utils.replace_variables(filename,
@@ -99,8 +100,10 @@ class _JmuTestCase(unittest.TestCase):
             # Replace the original submission in source:
             shutil.copy(new_file_name, utils.full_source_path(filename))
 
-            proc = subprocess.Popen(['python3',
-                                     utils.full_source_path(filename)],
+            command = ['python3', utils.full_source_path(filename)]
+            command.extend(args.split())
+
+            proc = subprocess.Popen(command,
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE)
@@ -119,6 +122,8 @@ class _JmuTestCase(unittest.TestCase):
 
             show_in = string_in.encode('unicode_escape').decode()
             message = "Input was: '{}'".format(show_in)
+            if len(args) > 0:
+                message += "\nCommand line arguments: {}".format(args)
             if msg is not None:
                 message += "\n" + msg
 
