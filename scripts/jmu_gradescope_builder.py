@@ -76,7 +76,7 @@ class App(tk.Tk):
 
     def __init__(self):
         super().__init__()
-        self.title('Python Gradescope Submission Builder')
+        self.title('Python Gradescope Autograder Builder')
         self.geometry('640x480')
         self.resizable(True, True)
 
@@ -144,10 +144,9 @@ class App(tk.Tk):
         autograder_folder = self.grader_path_text.get("1.0", 'end-1c')
         autograder_path = Path(autograder_folder)
         name = 'autograder_' + str(autograder_path.name) + ".zip"
-        default = autograder_path / name
         zipfile = fd.asksaveasfilename(filetypes=[("Zip file", ".zip")],
                                        initialdir=autograder_folder,
-                                       initialfile=default)
+                                       initialfile=name)
         if len(zipfile) > 0:
             build_utils.build_zip(autograder_folder, zipfile)
 

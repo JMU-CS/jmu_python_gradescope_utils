@@ -145,6 +145,7 @@ def build_zip(autograder_folder, zip_location):
     zip_file.writestr('run_autograder', autograder_str)
 
     zip_file.close()
+    logging.info(f'Zip file {zip_location} created.')
 
 
 if __name__ == "__main__":
