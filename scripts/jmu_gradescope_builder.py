@@ -9,6 +9,10 @@ import platform
 import os
 import jmu_gradescope_utils.build_utils as build_utils
 
+if platform.system() == 'Windows':
+    from ctypes import windll
+    windll.shcore.SetProcessDpiAwareness(1)
+
 
 def open_file(file_path):
     if platform.system() == 'Windows':
