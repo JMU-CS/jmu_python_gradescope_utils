@@ -17,7 +17,8 @@ setup(
         'flake8-rst-docstrings',
         'darglint'
     ],
-    scripts=['scripts/test_autograder.py'],
+    scripts=['scripts/test_autograder.py',
+             'scripts/jmu_gradescope_builder.py'],
     include_package_data=True,
     package_data={'jmu_gradescope_utils': ['data/*']},
 )
