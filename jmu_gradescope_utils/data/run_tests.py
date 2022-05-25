@@ -2,6 +2,7 @@ import unittest
 import os
 from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
 import jmu_gradescope_utils
+import sys
 
 if 'JMU_GRADESCOPE_BASE' in os.environ:
     GRADESCOPE_BASE = os.environ['JMU_GRADESCOPE_BASE']
@@ -15,4 +16,6 @@ if __name__ == '__main__':
     outfile = os.path.join(GRADESCOPE_BASE, 'results', 'results.json')
 
     with open(outfile, 'w') as f:
-        JSONTestRunner(visibility='visible', stream=f).run(suite)
+        result = JSONTestRunner(visibility='visible', stream=f).run(suite)
+
+    sys.exit(len(result.errors + result.failures))

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Set up autograder files
+
+submitSourceFiles=( __SOURCE_FILES__ )
+
+submitTestFiles=( __TEST_FILES__ )
+
+if [[ -z "${JMU_GRADESCOPE_BASE}" ]]; then
+  GRADESCOPE_BASE="/autograder"
+else
+  GRADESCOPE_BASE="${JMU_GRADESCOPE_BASE}"
+fi
+
+for t in ${submitSourceFiles[@]}; do
+    cp $GRADESCOPE_BASE/submission/$t $GRADESCOPE_BASE/source/$t
+done
+
+mkdir $GRADESCOPE_BASE/source/student_tests
+touch $GRADESCOPE_BASE/source/student_tests/__init__.py
+
+for t in ${submitTestFiles[@]}; do
+    cp $GRADESCOPE_BASE/submission/$t $GRADESCOPE_BASE/source/student_tests/$t
+done
+
+cd $GRADESCOPE_BASE/source
+
+python3 run_tests.py
