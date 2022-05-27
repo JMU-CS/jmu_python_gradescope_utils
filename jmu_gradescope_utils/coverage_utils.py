@@ -139,11 +139,12 @@ def check_coverage(checked_files, branch=False, target_percentage=100.0,
 
         # Get the coverage report in table form.
         if show_details:
-            tmp_report = tempfile.mkstemp(suffix='.txt', text=True)[1]
+            fd, tmp_report = tempfile.mkstemp(suffix='.txt', text=True)
             with open(tmp_report, 'w') as f:
                 cov.report(morfs=checked_files, file=f)
             with open(tmp_report, 'r') as f:
                 report_txt = f.read()
+            os.close(fd)
             os.remove(tmp_report)
 
     except:
