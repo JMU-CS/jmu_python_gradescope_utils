@@ -5,9 +5,16 @@ import os
 import tempfile
 import sys
 import importlib
+import logging
+import traceback
 from pathlib import Path
 from coverage import Coverage
 
+def get_gradescope_base():
+    if 'JMU_GRADESCOPE_BASE' in os.environ:
+        return os.environ['JMU_GRADESCOPE_BASE']
+    else:
+        return '/autograder'
 
 def run_student_tests(print_feedback=True, show_traces=True,
                       success_required=True):
@@ -28,10 +35,17 @@ def run_student_tests(print_feedback=True, show_traces=True,
         AssertionError if success_required is true and any test fails.
 
     """
-    suite = unittest.defaultTestLoader.discover('student_tests',
-                                                top_level_dir="./")
-    result = unittest.TestResult()
-    suite.run(result)
+    logging.info("Running student tests...")
+    try:
+        source_base = os.path.join(get_gradescope_base(), 'source')
+        suite = unittest.defaultTestLoader.discover('student_tests',
+                                                    top_level_dir=source_base)
+        result = unittest.TestResult()
+        suite.run(result)
+    except:
+        logging.error(f"Error running student tests:\n {traceback.format_exc()}")
+
+    logging.info("Tests have run.")
 
     succeeded = len(result.failures) == 0 and len(result.errors) == 0
 
@@ -87,43 +101,52 @@ def check_coverage(checked_files, branch=False, target_percentage=100.0,
         AssertionError if success_required, and coverage is below target.
 
     """
-    # Run the tests while checking coverage...
-    cov = Coverage(branch=branch)
-    cov.start()
+    logging.info("Checking coverage...")
+    
+    source_base = os.path.join(get_gradescope_base(), 'source')
+    try:
+        # Run the tests while checking coverage...
+        cov = Coverage(branch=branch)
+        cov.start()
 
-    # Make sure the tested modules are imported during coverage
-    # monitoring so that the definition lines are covered.
-    for name in checked_files:
-        module = Path(name).stem
-        del sys.modules[module]
-        importlib.import_module(module)
+        # Make sure the tested modules are imported during coverage
+        # monitoring so that the definition lines are covered.
+        for name in checked_files:
+            module = Path(name).stem
+            if module in sys.modules:
+                del sys.modules[module]
+            importlib.import_module(module)
 
-    run_student_tests(print_feedback=False, success_required=False)
-    cov.stop()
+        run_student_tests(print_feedback=False, success_required=False)
+        cov.stop()
 
-    # Get coverage data as a dictionary...
-    tmp_json = tempfile.mkstemp(suffix='.json', text=True)[1]
-    cov.json_report(outfile=tmp_json)
-    with open(tmp_json, 'r') as f:
-        data = json.load(f)
-    os.remove(tmp_json)
+        # Get coverage data as a dictionary...
+        tmp_json = tempfile.mkstemp(suffix='.json', text=True)[1]
+        cov.json_report(outfile=tmp_json)
+        with open(tmp_json, 'r') as f:
+            data = json.load(f)
+        os.remove(tmp_json)
 
-    adequate_coverage = True
-    full_coverage = True
-    for checked_file in checked_files:
-        if data['files'][checked_file]['summary']['percent_covered'] < target_percentage:
-            adequate_coverage = False
-        if data['files'][checked_file]['summary']['percent_covered_display'] != '100':
-            full_coverage = False
+        adequate_coverage = True
+        full_coverage = True
+        for checked_file in checked_files:
+            checked_file = os.path.join(source_base, checked_file)
+            if data['files'][checked_file]['summary']['percent_covered'] < target_percentage:
+                adequate_coverage = False
+            if data['files'][checked_file]['summary']['percent_covered_display'] != '100':
+                full_coverage = False
 
-    # Get the coverage report in table form.
-    if show_details:
-        tmp_report = tempfile.mkstemp(suffix='.txt', text=True)[1]
-        with open(tmp_report, 'w') as f:
-            cov.report(morfs=checked_files, file=f)
-        with open(tmp_report, 'r') as f:
-            report_txt = f.read()
-        os.remove(tmp_report)
+        # Get the coverage report in table form.
+        if show_details:
+            tmp_report = tempfile.mkstemp(suffix='.txt', text=True)[1]
+            with open(tmp_report, 'w') as f:
+                cov.report(morfs=checked_files, file=f)
+            with open(tmp_report, 'r') as f:
+                report_txt = f.read()
+            os.remove(tmp_report)
+
+    except:
+        logging.error(f"Error running student tests:\n {traceback.format_exc()}")
 
     if print_feedback:
         files_str = ", ".join(checked_files)
