@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ -z "${JMU_GRADESCOPE_BASE}" ]]; then
+  GRADESCOPE_BASE="/autograder"
+else
+  GRADESCOPE_BASE="${JMU_GRADESCOPE_BASE}"
+fi
+
+cd $GRADESCOPE_BASE/source
+
+python3 run_tests.py
