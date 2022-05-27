@@ -121,10 +121,11 @@ def check_coverage(checked_files, branch=False, target_percentage=100.0,
         cov.stop()
 
         # Get coverage data as a dictionary...
-        tmp_json = tempfile.mkstemp(suffix='.json', text=True)[1]
+        fd, tmp_json = tempfile.mkstemp(suffix='.json', text=True)
         cov.json_report(outfile=tmp_json)
         with open(tmp_json, 'r') as f:
             data = json.load(f)
+        os.close(fd)
         os.remove(tmp_json)
 
         adequate_coverage = True
