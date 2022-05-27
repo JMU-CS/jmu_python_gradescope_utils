@@ -8,6 +8,7 @@ import pkg_resources
 from pathlib import Path
 import tempfile
 import subprocess
+import traceback
 
 def test_autograder(autograder_folder, sample_folder,
                     delete_tmp_folder=True):
@@ -48,6 +49,9 @@ def test_autograder(autograder_folder, sample_folder,
 
         return_loc = Path(tempfile.mkdtemp()) / 'results.json'
         shutil.copy(tmpdir / 'results' / 'results.json', return_loc)
+
+    except:
+        logging.error(f"Error testing autograder:\n {traceback.format_exc()}")
 
     finally:
         if delete_tmp_folder:
