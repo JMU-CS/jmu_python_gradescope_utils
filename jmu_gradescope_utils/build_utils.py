@@ -31,7 +31,7 @@ def test_autograder(autograder_folder, sample_folder,
         os.makedirs(tmpdir / 'results')
 
         my_env = os.environ.copy()
-        my_env["JMU_GRADESCOPE_BASE"] = tmpdir
+        my_env["JMU_GRADESCOPE_BASE"] = str(tmpdir)
 
         script_path = str(sourcedir / 'run_tests.py')
 
