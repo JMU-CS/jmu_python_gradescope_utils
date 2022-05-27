@@ -58,11 +58,11 @@ def test_autograder(autograder_folder, sample_folder,
 
 def build_zip(autograder_folder, zip_location):
     # These just need to be copied in.
-    files_to_copy = ['run_autograder', 'setup.sh', 'requirements.txt', 'run_tests.py']
+    files_to_copy = ['run_autograder', 'setup.sh', 'run_tests.py']
 
     # These need to be copied in unless the user provides an alternate
     # version
-    config_files = ['flake8.cfg', 'docstring.cfg']
+    config_files = ['flake8.cfg', 'docstring.cfg', 'requirements.txt']
 
     # if autograder.zip already exists for this hw, back it up
     if os.path.exists(zip_location):
@@ -108,7 +108,7 @@ def build_zip(autograder_folder, zip_location):
             path = pkg_resources.resource_filename('jmu_gradescope_utils',
                                                    os.path.join('data',
                                                                 file_name))
-            logging.info(f"Adding default {file_name} to zip file")
+            logging.warning(f"{file_name} not provided. Adding default to zip file.")
             zip_file.write(path, arcname=file_name)
 
     zip_file.close()

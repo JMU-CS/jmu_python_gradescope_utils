@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='jmu_gradescope_utils',
-    version='0.1',
+    version='0.2',
     packages=['jmu_gradescope_utils'],
     url='',
     license='',
@@ -15,7 +15,9 @@ setup(
         'pep8-naming',
         'flake8-docstrings',
         'flake8-rst-docstrings',
-        'darglint'
+        'darglint',
+        'tk',
+        'gradescope_utils',
     ],
     scripts=['scripts/test_autograder.py',
              'scripts/jmu_gradescope_builder.py'],
