@@ -24,6 +24,13 @@ class TestHelloWorld(JmuTestCase):
         if len(output) != 0:
             self.fail("Submission does not pass pep8 checks:\n" + output)
         print('Submission passes all formatting checks!')
+
+    @weight(0)
+    @required()
+    def test_passes_student_tests(self):
+        """Check that submission passes student tests. """
+        jmu_gradescope_utils.run_student_tests()
+
     
     @weight(4)
     @required()

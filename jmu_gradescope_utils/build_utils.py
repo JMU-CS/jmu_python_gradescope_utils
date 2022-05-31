@@ -35,7 +35,7 @@ def test_autograder(autograder_folder, sample_folder,
 
         script_path = str(sourcedir / 'run_tests.py')
 
-        p = subprocess.Popen(['python', script_path],
+        p = subprocess.Popen(['python3', script_path],
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
                              env=my_env)
@@ -47,7 +47,9 @@ def test_autograder(autograder_folder, sample_folder,
 
         logging.info("Autograder finished.")
 
-        return_loc = Path(tempfile.mkdtemp()) / 'results.json'
+        # Give a .txt extension so it will be opened in a text
+        # editor by defulat.
+        return_loc = Path(tempfile.mkdtemp()) / 'results.json.txt'
         shutil.copy(tmpdir / 'results' / 'results.json', return_loc)
 
     except:

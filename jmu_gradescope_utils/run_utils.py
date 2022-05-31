@@ -22,7 +22,6 @@ def parse_file_list(config_str):
     return files
 
 def setup_autograder():
-    logging.basicConfig(level=logging.INFO)
     gradescope_base = get_gradescope_base()
     logging.info("Configuring autograder...")
     source_base = Path(gradescope_base) / 'source'
@@ -53,7 +52,6 @@ def setup_autograder():
         shutil.copy(submission_base / name,  student_test_dir / name)
 
 def run_tests():
-    logging.basicConfig(level=logging.INFO)
     logging.info("Running autograder...")
     gradescope_base = get_gradescope_base()
     unittest.defaultTestLoader.sortTestMethodsUsing = jmu_gradescope_utils.test_compare
