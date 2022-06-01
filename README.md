@@ -19,6 +19,8 @@ Features include:
 *    A script that makes it possible to test the autograder logic
      locally before uploading to the Gradescope server:
      `test_autograder.py`
+	 
+Documentation can be found here: <https://jmu-cs.github.io/jmu_python_gradescope_utils/>
 
 ## Installation
 
