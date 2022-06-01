@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>jmu_gradescope_utils.utils &mdash; JMU Python Gradescope Utils  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="jmu_gradescope_utils.coverage_utils" href="coverage_utils.html" />
+    <link rel="prev" title="JmuTestCase" href="jmu_test_case.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> JMU Python Gradescope Utils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="jmu_test_case.html">JmuTestCase</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">jmu_gradescope_utils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coverage_utils.html">jmu_gradescope_utils.coverage_utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">JMU Python Gradescope Utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>jmu_gradescope_utils.utils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-jmu_gradescope_utils.utils">
+<span id="jmu-gradescope-utils-utils"></span><h1>jmu_gradescope_utils.utils<a class="headerlink" href="#module-jmu_gradescope_utils.utils" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.IOContext">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">IOContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.IOContext" title="Permalink to this definition"></a></dt>
+<dd><p>Context manager that allows specifying simulated keyboard input, and captures text output.</p>
+<p>Use like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">IOContext</span><span class="p">(</span><span class="s2">&quot;program input&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># my code block</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">output</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.check_submitted_files">
+<span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">check_submitted_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/autograder/submission'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.check_submitted_files" title="Permalink to this definition"></a></dt>
+<dd><p>Checks that the files in the given list exist in the student’s submission.</p>
+<p>Returns a list of missing files.</p>
+<p>eg. check_submitted_files([‘src/calculator.py’])</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.count_regex_matches">
+<span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">count_regex_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip_comments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.count_regex_matches" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.full_source_path">
+<span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">full_source_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.full_source_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.full_submission_path">
+<span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">full_submission_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.full_submission_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.replace_variables">
+<span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">replace_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.replace_variables" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.run_flake8">
+<span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">run_flake8</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'flake8.cfg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.run_flake8" title="Permalink to this definition"></a></dt>
+<dd><p>Return the output of executing flake8.  Should be an empty string
+if no formatting issues were found.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.run_flake8_docstring">
+<span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">run_flake8_docstring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.run_flake8_docstring" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.utils.suppress_IO">
+<span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.utils.</span></span><span class="sig-name descname"><span class="pre">suppress_IO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.utils.suppress_IO" title="Permalink to this definition"></a></dt>
+<dd><p>Suppresses standard io when running a block of code, feeding in the given in_string as input
+and squelching all output. Use as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">suppress_IO</span><span class="p">(</span><span class="s2">&quot;desired input&quot;</span><span class="p">):</span>
+    <span class="c1"># my code block</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="jmu_test_case.html" class="btn btn-neutral float-left" title="JmuTestCase" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="coverage_utils.html" class="btn btn-neutral float-right" title="jmu_gradescope_utils.coverage_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
