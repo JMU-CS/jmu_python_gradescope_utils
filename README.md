@@ -28,13 +28,6 @@ Documentation can be found here: <https://jmu-cs.github.io/jmu_python_gradescope
 pip3 install git+https://github.com/JMU-CS/jmu_python_gradescope_utils.git
 ```
 
-This will automatically install all dependencies except
-`gradescope-utils` which can be installed as:
-
-```
-pip3 install gradescope-utils>=0.3.1
-```
-
 ## Instructions
 
 See `examples/hello_world_autograder/` for a sample autograder.
