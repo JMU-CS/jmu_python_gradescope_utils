@@ -9,6 +9,7 @@ from pathlib import Path
 import tempfile
 import subprocess
 import traceback
+import sys
 
 def test_autograder(autograder_folder, sample_folder,
                     delete_tmp_folder=True):
@@ -35,7 +36,7 @@ def test_autograder(autograder_folder, sample_folder,
 
         script_path = str(sourcedir / 'run_tests.py')
 
-        p = subprocess.Popen(['python3', script_path],
+        p = subprocess.Popen([sys.executable, script_path],
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
                              env=my_env)

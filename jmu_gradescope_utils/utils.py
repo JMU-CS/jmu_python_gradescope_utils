@@ -64,7 +64,7 @@ def run_flake8(filename, config='flake8.cfg'):
         raise FileNotFoundError("no such file: " + full_path)
 
     config_path = os.path.join(GRADESCOPE_BASE, 'source', config)
-    proc = subprocess.Popen(['python3', '-m', 'flake8',
+    proc = subprocess.Popen([sys.executable, '-m', 'flake8',
                              '--config={}'.format(config_path),
                              full_path],
                             stdout=subprocess.PIPE)

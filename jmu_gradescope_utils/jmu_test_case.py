@@ -133,7 +133,7 @@ class _JmuTestCase(unittest.TestCase):
             # Replace the original submission in source:
             shutil.copy(new_file_name, utils.full_source_path(filename))
 
-            command = ['python3', utils.full_source_path(filename)]
+            command = [sys.executable, utils.full_source_path(filename)]
             command.extend(args.split())
 
             proc = subprocess.Popen(command,
