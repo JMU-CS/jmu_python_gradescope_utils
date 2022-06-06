@@ -10,6 +10,7 @@ setup(
     author_email='nathan.r.sprague@gmail.com',
     description='Python Gradescope utilities',
     install_requires=[
+        'gradescope-utils',
         'flake8',
         'coverage',
         'pep8-naming',

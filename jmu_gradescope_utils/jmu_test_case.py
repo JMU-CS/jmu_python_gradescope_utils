@@ -1,3 +1,13 @@
+"""JMUTestCase class and related code.
+
+The ``JMUTestCase`` is a subclass of ``unittest.TestCase`` with the following
+features:
+
+* Some useful assertions for autograding.
+* Guaranteed test method execution order based on definition order.
+* ``@required`` annotation that can be used to make a particular test a requirement for all subsequent tests.
+
+"""
 import types
 import unittest
 import tempfile
@@ -80,7 +90,10 @@ class OrderAllTestsMeta(type):
 
 
 class _JmuTestCase(unittest.TestCase):
-    """ Additional useful assertions for grading. """
+    """Additional useful assertions for grading.
+
+    This is the superclass for JmuTestCase.  Users should subclass
+    ``JmuTestCase`` in their test code. """
 
     # counts the number of dynamic modules created
     module_count = 0
@@ -88,6 +101,26 @@ class _JmuTestCase(unittest.TestCase):
     def assertScriptOutputEqual(self, filename, string_in, expected,
                                 variables=None, args="", msg=None,
                                 processor=None):
+        """Assert correct output for the provided Python script.
+
+        Args:
+            filename (str): The name of the Python file to test
+            string_in (str): A string that will be fed to stdin for the script
+            expected (str): Expected stdout
+            variables (dict): A dictionary mapping from variable names to
+                values. The script will be edited with these
+                substitutions before it is executed.
+            args (str):  Command line arguments that will be passed to the script.
+            msg (str):  Error message that will be printed if the assertion fails.
+            processor (func):  A function mapping from string to string that will
+                process the script output before it is compared
+                to the expected output.
+
+        Raises:
+            AssertionError: If the expected output doesn't match the actual
+                output.
+
+        """
         tmpdir = None
         try:
             tmpdir, new_file_name = utils.replace_variables(filename,
@@ -136,6 +169,18 @@ class _JmuTestCase(unittest.TestCase):
                 shutil.rmtree(tmpdir)
 
     def assertNoLoops(self, filename, msg=None):
+        """ Assert that the provided script has no for or while loops.
+
+        Comments will be ignored.
+
+        Args:
+            filename (str): The name of the Python file to test
+            msg (str):  Error message that will be printed if the assertion fails.
+
+        Raises:
+            AssertionError: If the file contains a loop.
+
+        """
         loop_regex = "(^|(\r\n?|\n))\s*(for|while).*:\s*(#.*)*($|(\r\n?|\n))"
         count = utils.count_regex_matches(loop_regex, filename)
         message = f"It looks like the file {filename} contains at least one loop."
@@ -145,6 +190,18 @@ class _JmuTestCase(unittest.TestCase):
             self.fail(message)
 
     def assertNoForLoops(self, filename, msg=None):
+        """ Assert that the provided script has no for loops.
+
+        Comments will be ignored.
+
+        Args:
+            filename (str): The name of the Python file to test
+            msg (str):  Error message that will be printed if the assertion fails.
+
+        Raises:
+            AssertionError: If the file contains a for loop.
+
+        """
         loop_regex = "(^|(\r\n?|\n))\s*(for).*:\s*(#.*)*($|(\r\n?|\n))"
         count = utils.count_regex_matches(loop_regex, filename)
         message = f"It looks like the file {filename} contains at least one for loop."
@@ -154,6 +211,18 @@ class _JmuTestCase(unittest.TestCase):
             self.fail(message)
 
     def assertNoWhileLoops(self, filename, msg=None):
+        """ Assert that the provided script has no while loops.
+
+        Comments will be ignored.
+
+        Args:
+            filename (str): The name of the Python file to test
+            msg (str):  Error message that will be printed if the assertion fails.
+
+        Raises:
+            AssertionError: If the file contains a while loop.
+
+        """
         loop_regex = "(^|(\r\n?|\n))\s*(while).*:\s*(#.*)*($|(\r\n?|\n))"
         count = utils.count_regex_matches(loop_regex, filename)
         message = f"It looks like the file {filename} contains at least one while loop."
@@ -163,6 +232,18 @@ class _JmuTestCase(unittest.TestCase):
             self.fail(message)
 
     def assertNoConditionals(self, filename, msg=None):
+        """ Assert that the provided script has no conditional statements.
+
+        Comments will be ignored.  ``if __name__ == "__main__":`` will be ignored.
+
+        Args:
+            filename (str): The name of the Python file to test
+            msg (str):  Error message that will be printed if the assertion fails.
+
+        Raises:
+            AssertionError: If the file contains an if.
+
+        """
         if_regex = "(^|(\r\n?|\n))\s*if.*:\s*(#.*)*($|(\r\n?|\n))"
         main_regex = "(^|(\r\n?|\n))\s*if\s*__name__.*:\s*(#.*)*($|(\r\n?|\n))"
         count = utils.count_regex_matches(if_regex, filename)
@@ -174,18 +255,55 @@ class _JmuTestCase(unittest.TestCase):
             self.fail(message)
 
     def assertPassesPep8(self, filename):
+        """Assert that there are no formatting errors as discovered by flake8.
+
+        This will use the config file flake8.cfg included in the autograder
+        folder.
+
+        Args:
+            filename (str): The name of the Python file to test
+
+        Raises:
+            AssertionError: If flake8 produces any output.
+
+        """
         output = utils.run_flake8(filename)
         if len(output) != 0:
             self.fail("Submission does not pass pep8 checks:\n" + output)
         print('Submission passes all formatting checks!')
 
     def assertDocstringsCorrect(self, filename):
+        """Assert that there are no formatting errors as discovered by flake8.
+
+        This will use the config file docstring.cfg included in the autograder
+        folder.
+
+        Args:
+            filename (str): The name of the Python file to test
+
+        Raises:
+            AssertionError: If flake8 produces any output.
+
+        """
         output = utils.run_flake8_docstring(filename)
         if len(output) != 0:
             self.fail("Submission does not pass docstring checks:\n" + output)
         print('Submission passes all docstring checks!')
 
     def assertRequiredFilesPresent(self, required_files):
+        """Assert that all files in the provided list were submitted.
+
+        Note that this assertion won't get a chance to run if the test file
+        attempts to import a missing file. One workaround is to do the
+        imports inside the test methods.
+
+        Args:
+            required_files (list): A list of Python file names.
+
+        Raises:
+            AssertionError: If any of the indicated files are missing.
+
+        """
         missing_files = utils.check_submitted_files(required_files)
         for path in missing_files:
             print('Missing {0}'.format(path))
@@ -194,6 +312,11 @@ class _JmuTestCase(unittest.TestCase):
 
     def assertOutputCorrect(self, filename, string_in, expected,
                             variables=None, processor=None):
+        """ Wrapper for assertScriptOutputEqual.
+
+        I'm not sure why this exists. -NRS
+
+        """
         self.assertScriptOutputEqual(filename, string_in, expected,
                                      variables=variables, processor=processor)
         print('Correct output:\n' + expected)
@@ -213,6 +336,23 @@ class _JmuTestCase(unittest.TestCase):
         func(dynamic_module)
 
     def assertMatchCount(self, filename, regex, num_matches, msg=None):
+        """Assert that the regex matches exactly the correct number of times.
+
+        Ignores comments and docstrings.
+
+        Could be used if the problem instructions say something like:
+        "Your program must use exactly one while loop."
+
+        Args:
+            filename (str): The name of the Python file to test
+            regex (str): A Python regular expression.
+            num_matches (str):  The expected number of matches.
+            msg (str):  Error message that will be printed if the assertion fails.
+
+        Raises:
+            AssertionError: If the count doesn't match.
+
+        """
         count = utils.count_regex_matches(regex, filename)
         self.assertEqual(num_matches, count, msg=msg)
 

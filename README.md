@@ -19,18 +19,13 @@ Features include:
 *    A script that makes it possible to test the autograder logic
      locally before uploading to the Gradescope server:
      `test_autograder.py`
+	 
+Documentation can be found here: <https://jmu-cs.github.io/jmu_python_gradescope_utils/>
 
 ## Installation
 
 ```
 pip3 install git+https://github.com/JMU-CS/jmu_python_gradescope_utils.git
-```
-
-This will automatically install all dependencies except
-`gradescope-utils` which can be installed as:
-
-```
-pip3 install gradescope-utils>=0.3.1
 ```
 
 ## Instructions

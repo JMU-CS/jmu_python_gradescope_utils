@@ -141,12 +141,12 @@ class IOContext:
     """
     Context manager that allows specifying simulated keyboard input, and captures text output.
 
-    Use like so:
+    Use like so::
 
-    context = IOContext("program input")
-    with context:
-        # my code block
-    output = context.output
+        context = IOContext("program input")
+        with context:
+            # my code block
+        output = context.output
     """
     def __init__(self, in_string):
         self.text_in = io.StringIO(in_string)
