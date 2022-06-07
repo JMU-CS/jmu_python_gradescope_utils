@@ -98,27 +98,21 @@ class _JmuTestCase(unittest.TestCase):
     # counts the number of dynamic modules created
     module_count = 0
 
-    def assertScriptOutputEqual(self, filename, string_in, expected,
-                                variables=None, args="", msg=None,
-                                processor=None):
-        """Assert correct output for the provided Python script.
+    def result(self, filename, string_in, variables=None, args="",
+               msg=None, processor=None, only_output=False):
+        """Get output for the provided Python script.
 
         Args:
             filename (str): The name of the Python file to test
             string_in (str): A string that will be fed to stdin for the script
-            expected (str): Expected stdout
             variables (dict): A dictionary mapping from variable names to
                 values. The script will be edited with these
                 substitutions before it is executed.
             args (str):  Command line arguments that will be passed to the script.
             msg (str):  Error message that will be printed if the assertion fails.
             processor (func):  A function mapping from string to string that will
-                process the script output before it is compared
-                to the expected output.
-
-        Raises:
-            AssertionError: If the expected output doesn't match the actual
-                output.
+                process the script output before it is returned.
+            only_output (bool): Return only the stdout (rather than also the stderr).
 
         """
         tmpdir = None
@@ -145,13 +139,15 @@ class _JmuTestCase(unittest.TestCase):
 
             if processor:
                 actual_text = processor(actual_text)
+                if only_output:
+                    return {"stdout": actual_text}
             stderr_text = stderr.decode()
 
             if len(stderr) > 0:
                 stderr_text = stderr_text.replace(utils.full_source_path() + "/" , '')
                 err_msg = "Error during script execution:\n{}".format(stderr_text)
                 out_msg = "\nOutput before failure:\n{}".format(actual_text)
-                self.fail(err_msg + out_msg)
+                return {"stdout": actual_text, "stderr": stderr_text, "msg": err_msg + out_msg}
 
             show_in = string_in.encode('unicode_escape').decode()
             message = "Input was: '{}'".format(show_in)
@@ -159,14 +155,66 @@ class _JmuTestCase(unittest.TestCase):
                 message += "\nCommand line arguments: {}".format(args)
             if msg is not None:
                 message += "\n" + msg
-
-            self.assertEqual(actual_text, expected, message)
+            return {"stdout": actual_text, "msg": message}
         finally:
             if tmpdir is not None:
                 # Restore the original submission in source:
                 shutil.copy(os.path.join(tmpdir, "__tmp_backup.py"),
                             utils.full_source_path(filename))
                 shutil.rmtree(tmpdir)
+
+    def assertOutputEqual(self, filename, string_in, expected,
+                                variables=None, args="", msg=None,
+                                processor=None):
+        """Assert correct output for the provided Python script.
+
+        Args:
+            filename (str): The name of the Python file to test
+            string_in (str): A string that will be fed to stdin for the script
+            expected (str): Expected stdout
+            variables (dict): A dictionary mapping from variable names to
+                values. The script will be edited with these
+                substitutions before it is executed.
+            args (str):  Command line arguments that will be passed to the script.
+            msg (str):  Error message that will be printed if the assertion fails.
+            processor (func):  A function mapping from string to string that will
+                process the script output before it is compared
+                to the expected output.
+
+        Raises:
+            AssertionError: If the expected output doesn't match the actual
+                output.
+
+        """
+        result = self.result(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        if "stderr" in result:
+            self.fail(result["msg"])
+        self.assertEqual(expected, result["stdout"], result["msg"])
+
+    def assertOutputNotEqual(self, filename, string_in, expected,
+                                variables=None, args="", msg=None,
+                                processor=None):
+        result = self.result(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        if "stderr" in result:
+            self.fail(result["msg"])
+        self.assertNotEqual(expected, result["stdout"], result["msg"])
+
+    def assertInOutput(self, filename, string_in, expected,
+                                variables=None, args="", msg=None,
+                                processor=None):
+        result = self.result(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        if "stderr" in result:
+            self.fail(result["msg"])
+        self.assertIn(expected, result["stdout"], result["msg"])
+
+    def assertNotInOutput(self, filename, string_in, expected,
+                                variables=None, args="", msg=None,
+                                processor=None):
+        result = self.result(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        if "stderr" in result:
+            self.fail(result["msg"])
+        self.assertNotIn(expected, result["stdout"], result["msg"])
+
 
     def assertNoLoops(self, filename, msg=None):
         """ Assert that the provided script has no for or while loops.
@@ -312,12 +360,12 @@ class _JmuTestCase(unittest.TestCase):
 
     def assertOutputCorrect(self, filename, string_in, expected,
                             variables=None, processor=None):
-        """ Wrapper for assertScriptOutputEqual.
+        """ Wrapper for assertOutputEqual.
 
         I'm not sure why this exists. -NRS
 
         """
-        self.assertScriptOutputEqual(filename, string_in, expected,
+        self.assertOutputEqual(filename, string_in, expected,
                                      variables=variables, processor=processor)
         print('Correct output:\n' + expected)
 
