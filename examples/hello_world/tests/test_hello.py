@@ -31,7 +31,7 @@ class TestHelloWorld(JmuTestCase):
         """hello_world.py output checks. """
         string_in = ""
         expected = "Hello World!\n"
-        self.assertScriptOutputEqual('hello_world.py', string_in, expected)
+        self.assertOutputEqual('hello_world.py', string_in, expected)
         print('Correct output:\n' + expected)
 
 
