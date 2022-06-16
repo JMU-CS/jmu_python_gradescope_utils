@@ -163,6 +163,11 @@ class _JmuTestCase(unittest.TestCase):
                             utils.full_source_path(filename))
                 shutil.rmtree(tmpdir)
 
+    def assertScriptOutputEqual(self, filename, string_in, expected,
+                                variables=None, args="", msg=None,
+                                processor=None):
+        self.assertOutputEqual(filename, string_in, expected, variables, args, msg, processor)
+
     def assertOutputEqual(self, filename, string_in, expected,
                                 variables=None, args="", msg=None,
                                 processor=None):
