@@ -1,4 +1,16 @@
 from setuptools import setup
+import os
+import logging
+
+# https://stackoverflow.com/a/36693250
+def package_files(directory):
+    paths = []
+    for (path, _, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join('..', path, filename))
+    return paths
+
+extra_files = package_files('jmu_gradescope_utils/data')
 
 setup(
     name='jmu_gradescope_utils',
@@ -18,10 +30,9 @@ setup(
         'flake8-rst-docstrings',
         'darglint',
         'tk',
-        'gradescope_utils',
     ],
     scripts=['scripts/test_autograder.py',
              'scripts/jmu_gradescope_builder.py'],
     include_package_data=True,
-    package_data={'jmu_gradescope_utils': ['data/*']},
+    package_data={'': extra_files},
 )

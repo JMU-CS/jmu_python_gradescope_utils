@@ -86,6 +86,9 @@ class App(tk.Tk):
                              command=self.select_autograder)
         filemenu.add_command(label="Select Sample Submission...",
                              command=self.select_sample_submission)
+        filemenu.add_command(label="Generate Empty Autograder...",
+                             command=self.select_new_autograder)
+
         filemenu.add_command(label="Exit", command=self.quit)
         menubar.add_cascade(label="File", menu=filemenu)
         self.config(menu=menubar)
@@ -135,9 +138,12 @@ class App(tk.Tk):
     def test(self):
         autograder_folder = self.grader_path_text.get("1.0", 'end-1c')
         sample_folder = self.sample_path_text.get("1.0", 'end-1c')
-        result_json_loc = build_utils.test_autograder(autograder_folder,
-                                                      sample_folder)
-        open_file(result_json_loc)
+        result_json_loc, code = build_utils.test_autograder(autograder_folder,
+                                                            sample_folder)
+        if code == 0:
+            open_file(result_json_loc)
+        else:
+            logging.error(f"Return code {code} from run_tests.py.")
 
     def build(self):
 
@@ -160,17 +166,20 @@ class App(tk.Tk):
             self.grader_path_text.insert(1.0, folder)
             self.grader_path_text.config(state=tk.DISABLED)
 
-            cur_sample = self.sample_path_text.get("1.0", 'end-1c')
-            if len(cur_sample) == 0:
-                p = Path(folder)
-                possible_sample = p / 'sample'
-                if possible_sample.exists() and possible_sample.is_dir():
-                    self.test_button["state"] = "enable"
-                    self.sample_path_text.config(state=tk.NORMAL)
-                    self.sample_path_text.delete(1.0, "end")
-                    self.sample_path_text.insert(1.0, str(possible_sample))
-                    self.sample_path_text.config(state=tk.DISABLED)
+            p = Path(folder)
+            possible_sample = p / 'sample'
+            if possible_sample.exists() and possible_sample.is_dir():
+                self.test_button["state"] = "enable"
+                self.sample_path_text.config(state=tk.NORMAL)
+                self.sample_path_text.delete(1.0, "end")
+                self.sample_path_text.insert(1.0, str(possible_sample))
+                self.sample_path_text.config(state=tk.DISABLED)
 
+    def select_new_autograder(self):
+        dest = fd.askdirectory(title="Select Autograder Folder Location",
+                               mustexist=False)
+        build_utils.create_template(dest)
+    
     def select_sample_submission(self):
         folder = fd.askdirectory(title='Select Sample Submission')
 
