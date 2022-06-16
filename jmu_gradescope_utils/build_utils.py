@@ -21,6 +21,7 @@ def create_template(folder):
     source = pkg_resources.resource_filename('jmu_gradescope_utils',
                                              os.path.join('data', 'template'))
     shutil.copytree(source, path)
+    logging.info(f'Created {path}')
     return True
     
 
