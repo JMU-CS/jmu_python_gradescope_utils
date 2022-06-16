@@ -98,7 +98,7 @@ class _JmuTestCase(unittest.TestCase):
     # counts the number of dynamic modules created
     module_count = 0
 
-    def result(self, filename, string_in, variables=None, args="",
+    def getScriptOutput(self, filename, string_in, variables=None, args="",
                msg=None, processor=None, only_output=False):
         """Get output for the provided Python script.
 
@@ -186,23 +186,23 @@ class _JmuTestCase(unittest.TestCase):
                 output.
 
         """
-        result = self.result(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        result = self.getScriptOutput(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
         if "stderr" in result:
             self.fail(result["msg"])
-        self.assertEqual(expected, result["stdout"], result["msg"])
+        self.assertEqual(result["stdout"], expected, result["msg"])
 
     def assertOutputNotEqual(self, filename, string_in, expected,
                                 variables=None, args="", msg=None,
                                 processor=None):
-        result = self.result(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        result = self.getScriptOutput(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
         if "stderr" in result:
             self.fail(result["msg"])
-        self.assertNotEqual(expected, result["stdout"], result["msg"])
+        self.assertNotEqual(result["stdout"], expected, result["msg"])
 
     def assertInOutput(self, filename, string_in, expected,
                                 variables=None, args="", msg=None,
                                 processor=None):
-        result = self.result(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        result = self.getScriptOutput(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
         if "stderr" in result:
             self.fail(result["msg"])
         self.assertIn(expected, result["stdout"], result["msg"])
@@ -210,7 +210,7 @@ class _JmuTestCase(unittest.TestCase):
     def assertNotInOutput(self, filename, string_in, expected,
                                 variables=None, args="", msg=None,
                                 processor=None):
-        result = self.result(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        result = self.getScriptOutput(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
         if "stderr" in result:
             self.fail(result["msg"])
         self.assertNotIn(expected, result["stdout"], result["msg"])
