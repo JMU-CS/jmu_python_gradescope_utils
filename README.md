@@ -11,7 +11,7 @@ Features include:
     * provides a `@required` annotation that makes a test required, so
       that subsequent tests will automatically fail if it fails.
     * provide several additional assertion methods, including an
-      `assertScriptOutputEqual` method that makes it possible to specify
+      `assertOutputEqual` method that makes it possible to specify
       stdin input and check for correct stdout output for a Python
       script.
 *    Some additional utility functions for checking PEP 8 compliance
