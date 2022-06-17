@@ -12,11 +12,9 @@ test_results.json containing the autograder output.
 
 """
 
-import tempfile
 import sys
-import subprocess
-import os
 import shutil
+import jmu_gradescope_utils.build_utils as build_utils
 
 def main():
 
@@ -26,24 +24,9 @@ def main():
         print("\nScript must be run from within the autograder folder.")
         return
 
-    tmpdir = tempfile.mkdtemp()
-
-    shutil.copytree(sys.argv[1], os.path.join(tmpdir, 'submission')) 
-    shutil.copytree('./', os.path.join(tmpdir, 'source')) 
-    os.mkdir(os.path.join(tmpdir, 'results'))
-
-    my_env = os.environ.copy()
-    my_env["JMU_GRADESCOPE_BASE"] = tmpdir
-
-    p = subprocess.Popen('./run_autograder', env=my_env)
-    p.wait()
-
-    shutil.copy(os.path.join(tmpdir, 'results', 'results.json'),
-                './test_results.json')
-
-    shutil.rmtree(tmpdir)
-    
-    sys.exit(p.returncode)
+    result_json_loc, code = build_utils.test_autograder('./', sys.argv[1])
+    shutil.move(result_json_loc, './test_results.json')
+    sys.exit(code)
 
 if __name__ == "__main__":
     main()

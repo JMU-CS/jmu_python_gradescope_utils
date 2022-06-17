@@ -10,10 +10,25 @@ import tempfile
 import subprocess
 import traceback
 import sys
+import shutil
+
+def create_template(folder):
+    path = Path(folder)
+    if path.exists():
+        logging.error(f"Cannot create folder {path.name} already exists.")
+        return False
+
+    source = pkg_resources.resource_filename('jmu_gradescope_utils',
+                                             os.path.join('data', 'template'))
+    shutil.copytree(source, path)
+    logging.info(f'Created {path}')
+    return True
+    
 
 def test_autograder(autograder_folder, sample_folder,
                     delete_tmp_folder=True):
     return_loc = None
+    return_code = 1
     try:
         tmpdir = Path(tempfile.mkdtemp())
         sourcedir = tmpdir / 'source'
@@ -41,15 +56,17 @@ def test_autograder(autograder_folder, sample_folder,
                              stderr=subprocess.PIPE,
                              env=my_env)
         stdout, stderr = p.communicate()
+        return_code = p.returncode
+        # Raise an excpeption of there was a problem so we can see the stack.
         if len(stdout) > 0:
-            logging.error("stdout for run_autograder:\n" + stdout.decode())
+            logging.error("stdout for run_tests.py:\n" + stdout.decode())
         if len(stderr) > 0:
-            logging.error("stderr for run_autograder:\n" + stderr.decode())
+            logging.error("stderr for run_tests.py:\n" + stderr.decode())
 
         logging.info("Autograder finished.")
 
         # Give a .txt extension so it will be opened in a text
-        # editor by defulat.
+        # editor by default.
         return_loc = Path(tempfile.mkdtemp()) / 'results.json.txt'
         shutil.copy(tmpdir / 'results' / 'results.json', return_loc)
 
@@ -60,7 +77,7 @@ def test_autograder(autograder_folder, sample_folder,
         if delete_tmp_folder:
             shutil.rmtree(tmpdir)
         logging.info(f"Autograder result: {return_loc}")
-        return return_loc
+        return return_loc, return_code
 
 
 def build_zip(autograder_folder, zip_location):
@@ -112,9 +129,8 @@ def build_zip(autograder_folder, zip_location):
             logging.info(f"Adding user provided {file_name} to zip file")
             zip_file.write(path, arcname=file_name)
         else:
-            path = pkg_resources.resource_filename('jmu_gradescope_utils',
-                                                   os.path.join('data',
-                                                                file_name))
+            source = os.path.join('data', 'template', 'configurations', file_name)
+            path = pkg_resources.resource_filename('jmu_gradescope_utils', source)
             logging.warning(f"{file_name} not provided. Adding default to zip file.")
             zip_file.write(path, arcname=file_name)
 
@@ -125,8 +141,9 @@ def build_zip(autograder_folder, zip_location):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # build_zip('../examples/hello_world_with_coverage/', 'tmp.zip')
-    loc = test_autograder(
-        '/home/spragunr/jmu_python_gradescope_utils/examples/hello_world_new/',
-        '/home/spragunr/jmu_python_gradescope_utils/examples/hello_world_new/sample/')
+    #loc = test_autograder(
+    #    '/home/spragunr/jmu_python_gradescope_utils/examples/hello_world_new/',
+    #    '/home/spragunr/jmu_python_gradescope_utils/examples/hello_world_new/sample/')
 
-    subprocess.run(['xdg-open', str(loc)])
+    #subprocess.run(['xdg-open', str(loc)])
+    create_template(sys.argv[1])
