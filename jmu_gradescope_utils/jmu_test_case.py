@@ -20,7 +20,6 @@ from . import utils
 import sys
 from importlib import import_module
 
-
 _TEST_ORDER = {}
 
 
@@ -50,6 +49,7 @@ def _check_required(func):
         else:
             result = func(self, *args, **kwargs)
         return result
+
     return wrapper
 
 
@@ -58,6 +58,7 @@ def required():
     failed then all of the following methods will fail as well.
 
     """
+
     def decorator(func):
         @wraps(func)
         def wrapper(self, *args, **kwargs):
@@ -68,7 +69,9 @@ def required():
                 result = None
                 raise e.__class__(str(e) + "\n This test was required.  All of the following tests will fail automatically.")
             return result
+
         return wrapper
+
     return decorator
 
 
@@ -92,14 +95,14 @@ class OrderAllTestsMeta(type):
 class _JmuTestCase(unittest.TestCase):
     """Additional useful assertions for grading.
 
-    This is the superclass for JmuTestCase.  Users should subclass
+    This is the superclass for ``JmuTestCase``.  Users should subclass
     ``JmuTestCase`` in their test code. """
 
     # counts the number of dynamic modules created
     module_count = 0
 
     def getScriptOutput(self, filename, string_in, variables=None, args="",
-               msg=None, processor=None, only_output=False):
+                        msg=None, processor=None, only_output=False):
         """Get output for the provided Python script.
 
         Args:
@@ -113,6 +116,12 @@ class _JmuTestCase(unittest.TestCase):
             processor (func):  A function mapping from string to string that will
                 process the script output before it is returned.
             only_output (bool): Return only the stdout (rather than also the stderr).
+
+        Returns:
+            dict: keys include 'stdout', and 'msg' as well as 'stderr' if there
+            there was any output on stderr. 'stdout' and 'stderr' are the script
+            output and 'msg' is a formatted string describing any execution errors
+            as well as the inputs to the script.
 
         """
         tmpdir = None
@@ -144,7 +153,7 @@ class _JmuTestCase(unittest.TestCase):
             stderr_text = stderr.decode()
 
             if len(stderr) > 0:
-                stderr_text = stderr_text.replace(utils.full_source_path() + "/" , '')
+                stderr_text = stderr_text.replace(utils.full_source_path() + "/", '')
                 err_msg = "Error during script execution:\n{}".format(stderr_text)
                 out_msg = "\nOutput before failure:\n{}".format(actual_text)
                 return {"stdout": actual_text, "stderr": stderr_text, "msg": err_msg + out_msg}
@@ -166,11 +175,13 @@ class _JmuTestCase(unittest.TestCase):
     def assertScriptOutputEqual(self, filename, string_in, expected,
                                 variables=None, args="", msg=None,
                                 processor=None):
-        self.assertOutputEqual(filename, string_in, expected, variables, args, msg, processor)
+        """Deprecated wrapper for :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual`."""
+        self.assertOutputEqual(filename, string_in, expected, variables, args,
+                               msg, processor)
 
     def assertOutputEqual(self, filename, string_in, expected,
-                                variables=None, args="", msg=None,
-                                processor=None):
+                          variables=None, args="", msg=None,
+                          processor=None):
         """Assert correct output for the provided Python script.
 
         Args:
@@ -191,35 +202,53 @@ class _JmuTestCase(unittest.TestCase):
                 output.
 
         """
-        result = self.getScriptOutput(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+        result = self.getScriptOutput(filename, string_in, variables=variables,
+                                      args=args, msg=msg, processor=processor)
         if "stderr" in result:
             self.fail(result["msg"])
         self.assertEqual(result["stdout"], expected, result["msg"])
 
     def assertOutputNotEqual(self, filename, string_in, expected,
-                                variables=None, args="", msg=None,
-                                processor=None):
-        result = self.getScriptOutput(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+                             variables=None, args="", msg=None,
+                             processor=None):
+        """Assert script output is NOT equal to the indicated string.
+
+        See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
+        description of arguments.
+        """
+        result = self.getScriptOutput(filename, string_in, variables=variables,
+                                      args=args, msg=msg, processor=processor)
         if "stderr" in result:
             self.fail(result["msg"])
         self.assertNotEqual(result["stdout"], expected, result["msg"])
 
     def assertInOutput(self, filename, string_in, expected,
-                                variables=None, args="", msg=None,
-                                processor=None):
-        result = self.getScriptOutput(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+                       variables=None, args="", msg=None,
+                       processor=None):
+        """Assert script output contains the indicated string.
+
+        See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
+        description of arguments.
+        """
+        result = self.getScriptOutput(filename, string_in, variables=variables,
+                                      args=args, msg=msg, processor=processor)
         if "stderr" in result:
             self.fail(result["msg"])
         self.assertIn(expected, result["stdout"], result["msg"])
 
     def assertNotInOutput(self, filename, string_in, expected,
-                                variables=None, args="", msg=None,
-                                processor=None):
-        result = self.getScriptOutput(filename, string_in, variables=variables, args=args, msg=msg, processor=processor)
+                          variables=None, args="", msg=None,
+                          processor=None):
+        """Assert script output does not contain the indicated string.
+
+        See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
+        description of arguments.
+        """
+        result = self.getScriptOutput(filename, string_in, variables=variables,
+                                      args=args, msg=msg, processor=processor)
         if "stderr" in result:
             self.fail(result["msg"])
         self.assertNotIn(expected, result["stdout"], result["msg"])
-
 
     def assertNoLoops(self, filename, msg=None):
         """ Assert that the provided script has no for or while loops.
@@ -371,7 +400,7 @@ class _JmuTestCase(unittest.TestCase):
 
         """
         self.assertOutputEqual(filename, string_in, expected,
-                                     variables=variables, processor=processor)
+                               variables=variables, processor=processor)
         print('Correct output:\n' + expected)
 
     def run_with_substitution(self, filename, variables, func):
@@ -381,7 +410,9 @@ class _JmuTestCase(unittest.TestCase):
         if filename[-3:] == '.py':
             short_filename = filename[0:-3]
         new_module_name = short_filename + "_" + str(_JmuTestCase.module_count)
-        (tmpdir, new_file_name) = utils.replace_variables(filename, variables=variables, new_name=new_module_name + ".py")
+        (tmpdir, new_file_name) = utils.replace_variables(filename,
+                                                          variables=variables,
+                                                          new_name=new_module_name + ".py")
         # insert the new temporary directory into the system module load path
         sys.path.insert(1, tmpdir)
         # load the module
@@ -412,12 +443,11 @@ class _JmuTestCase(unittest.TestCase):
 
 class JmuTestCase(_JmuTestCase, metaclass=OrderAllTestsMeta):
     """Test methods declared within subclasses will be executed in the
-    order they are declared as long as the sortTestMethodUsing attrute
+    order they are declared as long as the ``sortTestMethodUsing`` attribute
     of the defaultTestLoader has been set::
+        unittest.defaultTestLoader.sortTestMethodsUsing = test_compare
 
-    unittest.defaultTestLoader.sortTestMethodsUsing = test_compare
-
-    They will also respect the @required decorator.
+    They will also respect the ``@required`` decorator.
 
     """
     pass

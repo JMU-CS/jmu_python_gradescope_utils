@@ -121,11 +121,11 @@ def check_submitted_files(paths, base=SUBMISSION_BASE):
 def suppress_IO(in_string):
     """
     Suppresses standard io when running a block of code, feeding in the given in_string as input
-    and squelching all output. Use as
+    and squelching all output. Use as::
 
-    ```with suppress_IO("desired input"):
+        with suppress_IO("desired input"):
             # my code block
-    ```
+
     """
     text_in = io.StringIO(in_string)
     text_out = io.StringIO()
