@@ -10,7 +10,6 @@ import tempfile
 import subprocess
 import traceback
 import sys
-import shutil
 
 def create_template(folder):
     path = Path(folder)
@@ -21,9 +20,11 @@ def create_template(folder):
     source = pkg_resources.resource_filename('jmu_gradescope_utils',
                                              os.path.join('data', 'template'))
     shutil.copytree(source, path)
+    # Can't have empty folders in the template...
+    (path / 'scaffolding').mkdir(exist_ok=True)
     logging.info(f'Created {path}')
     return True
-    
+
 
 def test_autograder(autograder_folder, sample_folder,
                     delete_tmp_folder=True):
