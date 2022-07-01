@@ -40,8 +40,13 @@ $ jmu_gradescope_builder.py
 If that doesn't work, you may need to execute the script using the Python interpreter:
 
 ```
-python3 jmu_python_gradescope_utils/scripts/jmu_gradescope_builder.py
+python3 wherever/on/your/system/bin/jmu_gradescope_builder.py
 ```
+
+Note that the GUI uses tk, which should be available in Windows, Linux
+and OSX. Unfortunately, the tk library distributed with some versions
+of OSX is broken, resulting in a blank black window. There are some
+reports that upgrading Python to 3.10 resolves the issue.
 
 ## Autograder Format
 
