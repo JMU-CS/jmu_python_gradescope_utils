@@ -178,7 +178,8 @@ class App(tk.Tk):
     def select_new_autograder(self):
         dest = fd.askdirectory(title="Select Autograder Folder Location",
                                mustexist=False)
-        build_utils.create_template(dest)
+        if len(dest) > 0:
+            build_utils.create_template(dest)
     
     def select_sample_submission(self):
         folder = fd.askdirectory(title='Select Sample Submission')
