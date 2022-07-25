@@ -144,6 +144,7 @@ class App(tk.Tk):
             open_file(result_json_loc)
         else:
             logging.error(f"Return code {code} from run_tests.py.")
+            open_file(result_json_loc)
 
     def build(self):
 
