@@ -102,7 +102,7 @@ class _JmuTestCase(unittest.TestCase):
     module_count = 0
 
     def getScriptOutput(self, filename, string_in, variables=None, args="",
-                        msg=None, processor=None, only_output=False):
+                        msg=None, processor=None, only_output=False, from_file=False):
         """Get output for the provided Python script.
 
         Args:
@@ -116,6 +116,8 @@ class _JmuTestCase(unittest.TestCase):
             processor (func):  A function mapping from string to string that will
                 process the script output before it is returned.
             only_output (bool): Return only the stdout (rather than also the stderr).
+            from_file (bool): Interpret string_in as a file name rather than a string.
+                The file should be stored in the scaffolding folder.
 
         Returns:
             dict: keys include 'stdout', and 'msg' as well as 'stderr' if there
@@ -143,6 +145,11 @@ class _JmuTestCase(unittest.TestCase):
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE)
+
+            if from_file:
+                with open(utils.full_source_path(string_in), 'r') as f:
+                    string_in = f.read()
+
             actual, stderr = proc.communicate(input=string_in.encode())
             actual_text = actual.decode()
 
@@ -181,7 +188,7 @@ class _JmuTestCase(unittest.TestCase):
 
     def assertOutputEqual(self, filename, string_in, expected,
                           variables=None, args="", msg=None,
-                          processor=None):
+                          processor=None, from_files=False, quiet=False):
         """Assert correct output for the provided Python script.
 
         Args:
@@ -196,6 +203,10 @@ class _JmuTestCase(unittest.TestCase):
             processor (func):  A function mapping from string to string that will
                 process the script output before it is compared
                 to the expected output.
+            from_files (bool): Interpret string_in and expected as a file names rather
+                than strings.  The files should be stored in the scaffolding folder.
+            quiet (bool): If true, detailed comparison feedback will be hidden. Only
+                only the string provided in msg will be displayed.
 
         Raises:
             AssertionError: If the expected output doesn't match the actual
@@ -203,52 +214,92 @@ class _JmuTestCase(unittest.TestCase):
 
         """
         result = self.getScriptOutput(filename, string_in, variables=variables,
-                                      args=args, msg=msg, processor=processor)
+                                      args=args, msg=msg, processor=processor,
+                                      from_file=from_files)
         if "stderr" in result:
             self.fail(result["msg"])
-        self.assertEqual(result["stdout"], expected, result["msg"])
+
+        if from_files:
+            with open(utils.full_source_path(expected), 'r') as f:
+                expected = f.read()
+
+        if quiet:
+            if result["stdout"] != expected:
+                self.fail(msg)
+        else:
+            self.assertEqual(result["stdout"], expected, result["msg"])
 
     def assertOutputNotEqual(self, filename, string_in, expected,
                              variables=None, args="", msg=None,
-                             processor=None):
+                             processor=None, from_files=False, quiet=False):
         """Assert script output is NOT equal to the indicated string.
 
         See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
         description of arguments.
         """
         result = self.getScriptOutput(filename, string_in, variables=variables,
-                                      args=args, msg=msg, processor=processor)
+                                      args=args, msg=msg, processor=processor,
+                                      from_file=from_files)
         if "stderr" in result:
             self.fail(result["msg"])
-        self.assertNotEqual(result["stdout"], expected, result["msg"])
+
+        if from_files:
+            with open(utils.full_source_path(expected), 'r') as f:
+                expected = f.read()
+
+        if quiet:
+            if result["stdout"] == expected:
+                self.fail(msg)
+        else:
+            self.assertNotEqual(result["stdout"], expected, result["msg"])
 
     def assertInOutput(self, filename, string_in, expected,
                        variables=None, args="", msg=None,
-                       processor=None):
+                       processor=None, from_files=False, quiet=False):
         """Assert script output contains the indicated string.
 
         See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
         description of arguments.
         """
         result = self.getScriptOutput(filename, string_in, variables=variables,
-                                      args=args, msg=msg, processor=processor)
+                                      args=args, msg=msg, processor=processor,
+                                      from_file=from_files)
         if "stderr" in result:
             self.fail(result["msg"])
-        self.assertIn(expected, result["stdout"], result["msg"])
+
+        if from_files:
+            with open(utils.full_source_path(expected), 'r') as f:
+                expected = f.read()
+
+        if quiet:
+            if result["stdout"] not in expected:
+                self.fail(msg)
+        else:
+            self.assertIn(expected, result["stdout"], result["msg"])
 
     def assertNotInOutput(self, filename, string_in, expected,
                           variables=None, args="", msg=None,
-                          processor=None):
+                          processor=None, from_files=False, quiet=False):
         """Assert script output does not contain the indicated string.
 
         See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
         description of arguments.
         """
         result = self.getScriptOutput(filename, string_in, variables=variables,
-                                      args=args, msg=msg, processor=processor)
+                                      args=args, msg=msg, processor=processor,
+                                      from_file=from_files)
         if "stderr" in result:
             self.fail(result["msg"])
-        self.assertNotIn(expected, result["stdout"], result["msg"])
+
+        if from_files:
+            with open(utils.full_source_path(expected), 'r') as f:
+                expected = f.read()
+
+        if quiet:
+            if result["stdout"] in expected:
+                self.fail(msg)
+        else:
+            self.assertNotIn(expected, result["stdout"], result["msg"])
 
     def assertNoLoops(self, filename, msg=None):
         """ Assert that the provided script has no for or while loops.
