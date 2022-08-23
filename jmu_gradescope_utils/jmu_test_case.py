@@ -188,7 +188,7 @@ class _JmuTestCase(unittest.TestCase):
 
     def assertOutputEqual(self, filename, string_in, expected,
                           variables=None, args="", msg=None,
-                          processor=None, from_files=False, quiet=False):
+                          processor=None, from_files=False):
         """Assert correct output for the provided Python script.
 
         Args:
@@ -205,9 +205,6 @@ class _JmuTestCase(unittest.TestCase):
                 to the expected output.
             from_files (bool): Interpret string_in and expected as a file names rather
                 than strings.  The files should be stored in the scaffolding folder.
-            quiet (bool): If true, detailed comparison feedback will be hidden. Only
-                only the string provided in msg will be displayed.
-
         Raises:
             AssertionError: If the expected output doesn't match the actual
                 output.
@@ -223,15 +220,11 @@ class _JmuTestCase(unittest.TestCase):
             with open(utils.full_source_path(expected), 'r') as f:
                 expected = f.read()
 
-        if quiet:
-            if result["stdout"] != expected:
-                self.fail(msg)
-        else:
-            self.assertEqual(result["stdout"], expected, result["msg"])
+        self.assertEqual(result["stdout"], expected, result["msg"])
 
     def assertOutputNotEqual(self, filename, string_in, expected,
                              variables=None, args="", msg=None,
-                             processor=None, from_files=False, quiet=False):
+                             processor=None, from_files=False):
         """Assert script output is NOT equal to the indicated string.
 
         See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
@@ -247,15 +240,11 @@ class _JmuTestCase(unittest.TestCase):
             with open(utils.full_source_path(expected), 'r') as f:
                 expected = f.read()
 
-        if quiet:
-            if result["stdout"] == expected:
-                self.fail(msg)
-        else:
-            self.assertNotEqual(result["stdout"], expected, result["msg"])
+        self.assertNotEqual(result["stdout"], expected, result["msg"])
 
     def assertInOutput(self, filename, string_in, expected,
                        variables=None, args="", msg=None,
-                       processor=None, from_files=False, quiet=False):
+                       processor=None, from_files=False):
         """Assert script output contains the indicated string.
 
         See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
@@ -271,15 +260,11 @@ class _JmuTestCase(unittest.TestCase):
             with open(utils.full_source_path(expected), 'r') as f:
                 expected = f.read()
 
-        if quiet:
-            if result["stdout"] not in expected:
-                self.fail(msg)
-        else:
-            self.assertIn(expected, result["stdout"], result["msg"])
+        self.assertIn(expected, result["stdout"], result["msg"])
 
     def assertNotInOutput(self, filename, string_in, expected,
                           variables=None, args="", msg=None,
-                          processor=None, from_files=False, quiet=False):
+                          processor=None, from_files=False):
         """Assert script output does not contain the indicated string.
 
         See :meth:`~jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual` for
@@ -295,11 +280,7 @@ class _JmuTestCase(unittest.TestCase):
             with open(utils.full_source_path(expected), 'r') as f:
                 expected = f.read()
 
-        if quiet:
-            if result["stdout"] in expected:
-                self.fail(msg)
-        else:
-            self.assertNotIn(expected, result["stdout"], result["msg"])
+        self.assertNotIn(expected, result["stdout"], result["msg"])
 
     def assertNoLoops(self, filename, msg=None):
         """ Assert that the provided script has no for or while loops.
