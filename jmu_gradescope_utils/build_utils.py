@@ -112,9 +112,10 @@ def build_zip(autograder_folder, zip_location):
 
     # Add scaffolding code
     scaffold_path = Path(autograder_folder) / 'scaffolding'
-    for path in scaffold_path.glob('*'):
-        logging.info(f"Adding {path.name} to zip file")
-        zip_file.write(path, arcname=path.name)
+    for path in scaffold_path.glob('**/*'):
+        lname = str(path).split(str(scaffold_path) + os.sep)[1]
+        logging.info(f"Adding  {lname} to zip file")
+        zip_file.write(path, arcname=lname)
 
     # Add the files that just need to be added...
     for file_name in files_to_copy:

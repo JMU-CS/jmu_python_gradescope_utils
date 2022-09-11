@@ -18,7 +18,10 @@ def convert_autograder(folder, backup=True):
 
     config_files = ['docstring.cfg', 'flake8.cfg', 'requirements.txt']
     for f in config_files:
-        shutil.copy(path / 'autograder' / f, path /'configurations' /f)
+        try:
+            shutil.copy(path / 'autograder' / f, path /'configurations' /f)
+        except FileNotFoundError:
+            print(f'{f} not in original autograder.')
 
     for item in (path / 'autograder').glob('*.py'):
         if item.name != 'run_tests.py': # no need for this

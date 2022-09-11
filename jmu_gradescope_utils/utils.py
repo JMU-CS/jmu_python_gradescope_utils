@@ -19,24 +19,20 @@ def full_submission_path(filename=None):
 
     if filename is None:
         return SUBMISSION_BASE
-    elif os.path.dirname(filename) == SUBMISSION_BASE:
+    elif SUBMISSION_BASE in os.path.dirname(filename):
         return filename
-    elif os.path.dirname(filename) == '':
-        return os.path.join(SUBMISSION_BASE, filename)
     else:
-        raise ValueError("bad submission file path: " + filename)
+        return os.path.join(SUBMISSION_BASE, filename)
 
 
 def full_source_path(filename=None):
 
     if filename is None:
         return SOURCE_BASE
-    elif os.path.dirname(filename) == SOURCE_BASE:
+    elif SOURCE_BASE in os.path.dirname(filename):
         return filename
-    elif os.path.dirname(filename) == '':
-        return os.path.join(SOURCE_BASE, filename)
     else:
-        raise ValueError("bad source file path: " + filename)
+        return os.path.join(SOURCE_BASE, filename)
 
 
 def count_regex_matches(regex, filename, strip_comments=True):
