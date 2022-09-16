@@ -39,8 +39,12 @@ def setup_autograder():
     # COPY STUDENT SUBMITTED CODE
     submission_base = Path(gradescope_base) / 'submission'
     for name in submit_code_files:
-        logging.info(f"Copying student submitted file: {name} to {source_base/name}")
-        shutil.copy(submission_base / name,  source_base / name)
+        if (submission_base / name).exists():
+            logging.info(f"Copying student submitted file: {name} to {source_base/name}")
+            shutil.copy(submission_base / name,  source_base / name)
+        else:
+            logging.info(f"Copying student submitted file: {name} is missing")
+            
 
     # COPY STUDENT SUBMITTED TESTS
     student_test_dir = source_base / 'student_tests'
