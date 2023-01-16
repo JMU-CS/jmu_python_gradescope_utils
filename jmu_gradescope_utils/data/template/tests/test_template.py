@@ -26,5 +26,5 @@ class TestDefault(JmuTestCase):
 
     @weight(8)
     def test_functionality(self):
-        """Test student code funtionality."""
+        """Test student code functionality."""
         self.assertEqual(1, 1)

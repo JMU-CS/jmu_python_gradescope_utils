@@ -58,7 +58,7 @@ def test_autograder(autograder_folder, sample_folder,
                              env=my_env)
         stdout, stderr = p.communicate()
         return_code = p.returncode
-        # Raise an excpeption of there was a problem so we can see the stack.
+        # Raise an exception if there was a problem so we can see the stack.
         if len(stdout) > 0:
             logging.error("stdout for run_tests.py:\n" + stdout.decode())
         if len(stderr) > 0:
