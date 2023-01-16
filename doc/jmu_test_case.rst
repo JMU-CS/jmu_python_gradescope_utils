@@ -14,13 +14,3 @@ JmuTestCase
    :members:
    :private-members:
    :undoc-members:
-
-.. automodule:: jmu_gradescope_utils.utils
-   :members:
-   :private-members:
-   :undoc-members:
-
-.. automodule:: jmu_gradescope_utils.coverage_utils
-   :members:
-   :private-members:
-   :undoc-members:

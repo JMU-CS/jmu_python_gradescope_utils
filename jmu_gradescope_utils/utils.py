@@ -19,24 +19,20 @@ def full_submission_path(filename=None):
 
     if filename is None:
         return SUBMISSION_BASE
-    elif os.path.dirname(filename) == SUBMISSION_BASE:
+    elif SUBMISSION_BASE in os.path.dirname(filename):
         return filename
-    elif os.path.dirname(filename) == '':
-        return os.path.join(SUBMISSION_BASE, filename)
     else:
-        raise ValueError("bad submission file path: " + filename)
+        return os.path.join(SUBMISSION_BASE, filename)
 
 
 def full_source_path(filename=None):
 
     if filename is None:
         return SOURCE_BASE
-    elif os.path.dirname(filename) == SOURCE_BASE:
+    elif SOURCE_BASE in os.path.dirname(filename):
         return filename
-    elif os.path.dirname(filename) == '':
-        return os.path.join(SOURCE_BASE, filename)
     else:
-        raise ValueError("bad source file path: " + filename)
+        return os.path.join(SOURCE_BASE, filename)
 
 
 def count_regex_matches(regex, filename, strip_comments=True):
@@ -64,7 +60,7 @@ def run_flake8(filename, config='flake8.cfg'):
         raise FileNotFoundError("no such file: " + full_path)
 
     config_path = os.path.join(GRADESCOPE_BASE, 'source', config)
-    proc = subprocess.Popen(['flake8',
+    proc = subprocess.Popen([sys.executable, '-m', 'flake8',
                              '--config={}'.format(config_path),
                              full_path],
                             stdout=subprocess.PIPE)
@@ -121,11 +117,11 @@ def check_submitted_files(paths, base=SUBMISSION_BASE):
 def suppress_IO(in_string):
     """
     Suppresses standard io when running a block of code, feeding in the given in_string as input
-    and squelching all output. Use as
+    and squelching all output. Use as::
 
-    ```with suppress_IO("desired input"):
+        with suppress_IO("desired input"):
             # my code block
-    ```
+
     """
     text_in = io.StringIO(in_string)
     text_out = io.StringIO()
