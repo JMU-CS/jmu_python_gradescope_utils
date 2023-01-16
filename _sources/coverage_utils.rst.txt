@@ -13,4 +13,3 @@ jmu_gradescope_utils.coverage_utils
    :undoc-members:
 
 
-

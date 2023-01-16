@@ -6,11 +6,11 @@
 JmuTestCase
 ===========================================================
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
 .. automodule:: jmu_gradescope_utils.jmu_test_case
    :members:
    :private-members:
    :undoc-members:
-
-
-
-

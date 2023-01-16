@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JmuTestCase &mdash; JMU Python Gradescope Utils  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,6 +13,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -39,7 +39,9 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">JmuTestCase</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">JmuTestCase</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">jmu_gradescope_utils.utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="coverage_utils.html">jmu_gradescope_utils.coverage_utils</a></li>
 </ul>
@@ -57,8 +59,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>JmuTestCase</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">JmuTestCase</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/jmu_test_case.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -68,10 +70,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-jmu_gradescope_utils.jmu_test_case">
-<span id="jmutestcase"></span><h1>JmuTestCase<a class="headerlink" href="#module-jmu_gradescope_utils.jmu_test_case" title="Permalink to this headline"></a></h1>
-<p>JMUTestCase class and related code.</p>
-<p><code class="docutils literal notranslate"><span class="pre">JMUTestCase</span></code> is a subclass of <code class="docutils literal notranslate"><span class="pre">unittest.TestCase</span></code> with the following
+  <div class="section" id="jmutestcase">
+<h1>JmuTestCase<a class="headerlink" href="#jmutestcase" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-jmu_gradescope_utils.jmu_test_case"></span><p>JMUTestCase class and related code.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">JMUTestCase</span></code> is a subclass of <code class="docutils literal notranslate"><span class="pre">unittest.TestCase</span></code> with the following
 features:</p>
 <ul class="simple">
 <li><p>Some useful assertions for autograding.</p></li>
@@ -82,10 +86,12 @@ features:</p>
 <dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case.JmuTestCase">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.jmu_test_case.</span></span><span class="sig-name descname"><span class="pre">JmuTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case.JmuTestCase" title="Permalink to this definition"></a></dt>
 <dd><p>Test methods declared within subclasses will be executed in the
-order they are declared as long as the sortTestMethodUsing attrute
+order they are declared as long as the <code class="docutils literal notranslate"><span class="pre">sortTestMethodUsing</span></code> attribute
 of the defaultTestLoader has been set:</p>
-<p>unittest.defaultTestLoader.sortTestMethodsUsing = test_compare</p>
-<p>They will also respect the &#64;required decorator.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unittest</span><span class="o">.</span><span class="n">defaultTestLoader</span><span class="o">.</span><span class="n">sortTestMethodsUsing</span> <span class="o">=</span> <span class="n">test_compare</span>
+</pre></div>
+</div>
+<p>They will also respect the <code class="docutils literal notranslate"><span class="pre">&#64;required</span></code> decorator.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -99,7 +105,7 @@ and they will respect the ‘required’ decorator.</p>
 <dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.jmu_test_case.</span></span><span class="sig-name descname"><span class="pre">_JmuTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase" title="Permalink to this definition"></a></dt>
 <dd><p>Additional useful assertions for grading.</p>
-<p>This is the superclass for JmuTestCase.  Users should subclass
+<p>This is the superclass for <code class="docutils literal notranslate"><span class="pre">JmuTestCase</span></code>.  Users should subclass
 <code class="docutils literal notranslate"><span class="pre">JmuTestCase</span></code> in their test code.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertDocstringsCorrect">
@@ -109,12 +115,20 @@ and they will respect the ‘required’ decorator.</p>
 folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the Python file to test</p>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If flake8 produces any output.</p>
+<dd class="field-even"><p><strong>AssertionError</strong> – If flake8 produces any output.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertInOutput">
+<span class="sig-name descname"><span class="pre">assertInOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertInOutput" title="Permalink to this definition"></a></dt>
+<dd><p>Assert script output contains the indicated string.</p>
+<p>See <a class="reference internal" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual" title="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assertOutputEqual()</span></code></a> for
+description of arguments.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -127,14 +141,14 @@ folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the Python file to test</p></li>
-<li><p><strong>regex</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A Python regular expression.</p></li>
-<li><p><strong>num_matches</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The expected number of matches.</p></li>
-<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Error message that will be printed if the assertion fails.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p></li>
+<li><p><strong>regex</strong> (<em>str</em>) – A Python regular expression.</p></li>
+<li><p><strong>num_matches</strong> (<em>str</em>) – The expected number of matches.</p></li>
+<li><p><strong>msg</strong> (<em>str</em>) – Error message that will be printed if the assertion fails.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the count doesn’t match.</p>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the count doesn’t match.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -147,12 +161,12 @@ folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the Python file to test</p></li>
-<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Error message that will be printed if the assertion fails.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p></li>
+<li><p><strong>msg</strong> (<em>str</em>) – Error message that will be printed if the assertion fails.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the file contains an if.</p>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the file contains an if.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -165,12 +179,12 @@ folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the Python file to test</p></li>
-<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Error message that will be printed if the assertion fails.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p></li>
+<li><p><strong>msg</strong> (<em>str</em>) – Error message that will be printed if the assertion fails.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the file contains a for loop.</p>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the file contains a for loop.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -183,12 +197,12 @@ folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the Python file to test</p></li>
-<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Error message that will be printed if the assertion fails.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p></li>
+<li><p><strong>msg</strong> (<em>str</em>) – Error message that will be printed if the assertion fails.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the file contains a loop.</p>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the file contains a loop.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -201,21 +215,66 @@ folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the Python file to test</p></li>
-<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Error message that will be printed if the assertion fails.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p></li>
+<li><p><strong>msg</strong> (<em>str</em>) – Error message that will be printed if the assertion fails.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the file contains a while loop.</p>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the file contains a while loop.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertNotInOutput">
+<span class="sig-name descname"><span class="pre">assertNotInOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertNotInOutput" title="Permalink to this definition"></a></dt>
+<dd><p>Assert script output does not contain the indicated string.</p>
+<p>See <a class="reference internal" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual" title="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assertOutputEqual()</span></code></a> for
+description of arguments.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputCorrect">
 <span class="sig-name descname"><span class="pre">assertOutputCorrect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputCorrect" title="Permalink to this definition"></a></dt>
-<dd><p>Wrapper for assertScriptOutputEqual.</p>
+<dd><p>Wrapper for assertOutputEqual.</p>
 <p>I’m not sure why this exists. -NRS</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual">
+<span class="sig-name descname"><span class="pre">assertOutputEqual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual" title="Permalink to this definition"></a></dt>
+<dd><p>Assert correct output for the provided Python script.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p></li>
+<li><p><strong>string_in</strong> (<em>str</em>) – A string that will be fed to stdin for the script</p></li>
+<li><p><strong>expected</strong> (<em>str</em>) – Expected stdout</p></li>
+<li><p><strong>variables</strong> (<em>dict</em>) – A dictionary mapping from variable names to
+values. The script will be edited with these
+substitutions before it is executed.</p></li>
+<li><p><strong>args</strong> (<em>str</em>) – Command line arguments that will be passed to the script.</p></li>
+<li><p><strong>msg</strong> (<em>str</em>) – Error message that will be printed if the assertion fails.</p></li>
+<li><p><strong>processor</strong> (<em>func</em>) – A function mapping from string to string that will
+process the script output before it is compared
+to the expected output.</p></li>
+<li><p><strong>from_files</strong> (<em>bool</em>) – Interpret string_in and expected as a file names rather
+than strings.  The files should be stored in the scaffolding folder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the expected output doesn’t match the actual
+    output.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputNotEqual">
+<span class="sig-name descname"><span class="pre">assertOutputNotEqual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputNotEqual" title="Permalink to this definition"></a></dt>
+<dd><p>Assert script output is NOT equal to the indicated string.</p>
+<p>See <a class="reference internal" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual" title="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assertOutputEqual()</span></code></a> for
+description of arguments.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -226,10 +285,10 @@ folder.</p>
 folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the Python file to test</p>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If flake8 produces any output.</p>
+<dd class="field-even"><p><strong>AssertionError</strong> – If flake8 produces any output.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -243,10 +302,10 @@ attempts to import a missing file. One workaround is to do the
 imports inside the test methods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>required_files</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – A list of Python file names.</p>
+<dd class="field-odd"><p><strong>required_files</strong> (<em>list</em>) – A list of Python file names.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If any of the indicated files are missing.</p>
+<dd class="field-even"><p><strong>AssertionError</strong> – If any of the indicated files are missing.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -254,26 +313,38 @@ imports inside the test methods.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertScriptOutputEqual">
 <span class="sig-name descname"><span class="pre">assertScriptOutputEqual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertScriptOutputEqual" title="Permalink to this definition"></a></dt>
-<dd><p>Assert correct output for the provided Python script.</p>
+<dd><p>Deprecated wrapper for <a class="reference internal" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual" title="jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assertOutputEqual()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jmu_gradescope_utils.jmu_test_case._JmuTestCase.getScriptOutput">
+<span class="sig-name descname"><span class="pre">getScriptOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case._JmuTestCase.getScriptOutput" title="Permalink to this definition"></a></dt>
+<dd><p>Get output for the provided Python script.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the Python file to test</p></li>
-<li><p><strong>string_in</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A string that will be fed to stdin for the script</p></li>
-<li><p><strong>expected</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Expected stdout</p></li>
-<li><p><strong>variables</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a>) – A dictionary mapping from variable names to
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the Python file to test</p></li>
+<li><p><strong>string_in</strong> (<em>str</em>) – A string that will be fed to stdin for the script</p></li>
+<li><p><strong>variables</strong> (<em>dict</em>) – A dictionary mapping from variable names to
 values. The script will be edited with these
 substitutions before it is executed.</p></li>
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Command line arguments that will be passed to the script.</p></li>
-<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Error message that will be printed if the assertion fails.</p></li>
+<li><p><strong>args</strong> (<em>str</em>) – Command line arguments that will be passed to the script.</p></li>
+<li><p><strong>msg</strong> (<em>str</em>) – Error message that will be printed if the assertion fails.</p></li>
 <li><p><strong>processor</strong> (<em>func</em>) – A function mapping from string to string that will
-process the script output before it is compared
-to the expected output.</p></li>
+process the script output before it is returned.</p></li>
+<li><p><strong>only_output</strong> (<em>bool</em>) – Return only the stdout (rather than also the stderr).</p></li>
+<li><p><strong>from_file</strong> (<em>bool</em>) – Interpret string_in as a file name rather than a string.
+The file should be stored in the scaffolding folder.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the expected output doesn’t match the actual
-    output.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>keys include ‘stdout’, and ‘msg’ as well as ‘stderr’ if there
+there was any output on stderr. ‘stdout’ and ‘stderr’ are the script
+output and ‘msg’ is a formatted string describing any execution errors
+as well as the inputs to the script.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -313,7 +384,7 @@ failed then all of the following methods will fail as well.</p>
 <span class="sig-prename descclassname"><span class="pre">jmu_gradescope_utils.jmu_test_case.</span></span><span class="sig-name descname"><span class="pre">test_compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jmu_gradescope_utils.jmu_test_case.test_compare" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-</section>
+</div>
 
 
            </div>
@@ -326,7 +397,7 @@ failed then all of the following methods will fail as well.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022.</p>
+    <p>&#169; Copyright 2020.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

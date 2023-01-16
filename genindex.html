@@ -13,6 +13,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
@@ -54,8 +55,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Index</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -72,6 +73,7 @@
  | <a href="#A"><strong>A</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#J"><strong>J</strong></a>
  | <a href="#M"><strong>M</strong></a>
@@ -100,6 +102,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertDocstringsCorrect">assertDocstringsCorrect() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
 </li>
+      <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertInOutput">assertInOutput() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
+</li>
       <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertMatchCount">assertMatchCount() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
 </li>
       <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertNoConditionals">assertNoConditionals() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
@@ -108,11 +112,17 @@
 </li>
       <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertNoLoops">assertNoLoops() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
 </li>
+      <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertNotInOutput">assertNotInOutput() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertNoWhileLoops">assertNoWhileLoops() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
 </li>
       <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputCorrect">assertOutputCorrect() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
+</li>
+      <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputEqual">assertOutputEqual() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
+</li>
+      <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertOutputNotEqual">assertOutputNotEqual() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
 </li>
       <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.assertPassesPep8">assertPassesPep8() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
 </li>
@@ -145,6 +155,18 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="utils.html#jmu_gradescope_utils.utils.full_submission_path">full_submission_path() (in module jmu_gradescope_utils.utils)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="coverage_utils.html#jmu_gradescope_utils.coverage_utils.get_gradescope_base">get_gradescope_base() (in module jmu_gradescope_utils.coverage_utils)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="jmu_test_case.html#jmu_gradescope_utils.jmu_test_case._JmuTestCase.getScriptOutput">getScriptOutput() (jmu_gradescope_utils.jmu_test_case._JmuTestCase method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -262,7 +284,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022.</p>
+    <p>&#169; Copyright 2020.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
