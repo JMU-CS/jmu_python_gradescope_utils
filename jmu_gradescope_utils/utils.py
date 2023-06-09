@@ -53,9 +53,9 @@ def count_regex_matches(regex, filename, strip_comments=True):
 def run_flake8(filename, config='flake8.cfg'):
     """Return the output of executing flake8.  Should be an empty string
     if no formatting issues were found.
-
+    KMolloy - change to use source path (instead of submission path)
     """
-    full_path = full_submission_path(filename)
+    full_path = full_source_path(filename)
     if not os.path.exists(full_path):
         raise FileNotFoundError("no such file: " + full_path)
 
@@ -78,7 +78,8 @@ def replace_variables(filename, variables=None, new_name=None):
         new_file_name = os.path.join(tmpdir, new_name)
     else:
         new_file_name = os.path.join(tmpdir, os.path.basename(filename))
-    with open(full_submission_path(filename), 'r') as f:
+    # copy from source directory
+    with open(full_source_path(filename), 'r') as f:
         new_file = f.read()
 
     if variables is not None:

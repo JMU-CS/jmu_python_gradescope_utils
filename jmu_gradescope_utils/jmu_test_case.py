@@ -15,6 +15,7 @@ import subprocess
 import os
 import shutil
 import re
+from pathlib import Path
 from functools import wraps
 from . import utils
 import sys
@@ -104,6 +105,7 @@ class _JmuTestCase(unittest.TestCase):
     def getScriptOutput(self, filename, string_in, variables=None, args="",
                         msg=None, processor=None, only_output=False, from_file=False):
         """Get output for the provided Python script.
+        Changed June 2023 - look for file without leading paths in source only
 
         Args:
             filename (str): The name of the Python file to test
@@ -127,12 +129,13 @@ class _JmuTestCase(unittest.TestCase):
 
         """
         tmpdir = None
+        filenameNoPath = Path(filename).name
         try:
             tmpdir, new_file_name = utils.replace_variables(filename,
                                                             variables)
 
             # Make a clean backup of the original submission:
-            shutil.copy(utils.full_submission_path(filename),
+            shutil.copy(utils.full_source_path(filename),
                         os.path.join(tmpdir, "__tmp_backup.py"))
 
             # Replace the original submission in source:
