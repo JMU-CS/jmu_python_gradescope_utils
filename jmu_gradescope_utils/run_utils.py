@@ -44,7 +44,7 @@ def setup_autograder():
     for student_file in submit_code_files:
         path_name = Path(student_file)
         if (submission_base / path_name).exists():
-            logging.info(f"Copying student submitted file: {pathName} to {source_base/path_name.name}")
+            logging.info(f"Copying student submitted file: {path_name} to {source_base/path_name.name}")
             # copy without any relative directory prefixes
             shutil.copy(submission_base / student_file,  source_base / path_name.name)
         else:
