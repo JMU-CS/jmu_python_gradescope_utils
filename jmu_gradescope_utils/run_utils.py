@@ -37,14 +37,18 @@ def setup_autograder():
     submit_test_files = parse_file_list(config['SUBMIT']['tests'])
 
     # COPY STUDENT SUBMITTED CODE
+    # KMolloy -- June 2023 submitted_code_files MAY be under a subdir
+    #            of submission
+
     submission_base = Path(gradescope_base) / 'submission'
-    for pathName in submit_code_files:
-        if (submission_base / pathName).exists():
-            logging.info(f"Copying student submitted file: {pathName} to {source_base/pathName.name}")
+    for student_file in submit_code_files:
+        path_name = Path(student_file)
+        if (submission_base / path_name).exists():
+            logging.info(f"Copying student submitted file: {pathName} to {source_base/path_name.name}")
             # copy without any relative directory prefixes
-            shutil.copy(submission_base / pathName,  source_base / pathName.name)
+            shutil.copy(submission_base / student_file,  source_base / path_name.name)
         else:
-            logging.info(f"Copying student submitted file: {pathName} is missing")
+            logging.info(f"Copying student submitted file: {path_name} is missing")
             
 
     # COPY STUDENT SUBMITTED TESTS
@@ -52,9 +56,10 @@ def setup_autograder():
     student_test_dir.mkdir()
     (student_test_dir / '__init__.py').touch()
 
-    for pathName in submit_test_files:
-        logging.info(f"Copying student submitted test file: {pathName} to {student_test_dir/pathName.name}")
-        shutil.copy(submission_base / pathName,  student_test_dir / pathName.name)
+    for student_file in submit_test_files:
+        path_name = Path(student_file)
+        logging.info(f"Copying student submitted test file: {path_name} to {student_test_dir/path_name.name}")
+        shutil.copy(submission_base / path_name,  student_test_dir / path_name.name)
 
 def run_tests():
     logging.info("Running autograder...")
