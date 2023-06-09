@@ -100,7 +100,7 @@ def replace_variables(filename, variables=None, new_name=None):
 # Copied here so that SUBMISSION_BASE default will respect
 # 'JMU_GRADESCOPE_BASE'
 
-def check_submitted_files(paths, base=SUBMISSION_BASE):
+def check_submitted_files(paths, base=SOURCE_BASE):
     """Checks that the files in the given list exist in the student's submission.
 
     Returns a list of missing files.

@@ -105,7 +105,7 @@ class _JmuTestCase(unittest.TestCase):
     def getScriptOutput(self, filename, string_in, variables=None, args="",
                         msg=None, processor=None, only_output=False, from_file=False):
         """Get output for the provided Python script.
-        Changed June 2023 - look for file without leading paths in source only
+       
 
         Args:
             filename (str): The name of the Python file to test
