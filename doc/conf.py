@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.abspath(".."))
 project = "JMU Python Gradescope Utils"
 copyright = "2020"
 author = "JMU People"
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx",'sphinx.ext.napoleon' ]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx", "sphinx.ext.napoleon"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 templates_path = ["_templates"]
 html_theme = "sphinx_rtd_theme"
