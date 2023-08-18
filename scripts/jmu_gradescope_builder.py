@@ -109,12 +109,12 @@ class App(tk.Tk):
 
         # Initialize text fields with current working directory
         self.grader_path_text.insert(1.0, os.getcwd())
-        self.grader_path_text.config(state=tk.DISABLED)
+#       self.grader_path_text.config(state=tk.DISABLED)
         if os.path.exists("config.ini"):
             self.sample_path_text.insert(1.0, os.getcwd() + os.path.sep + "sample")
         else:
             self.sample_path_text.insert(1.0, os.getcwd())
-        self.sample_path_text.config(state=tk.DISABLED)
+#       self.sample_path_text.config(state=tk.DISABLED)
 
         path_frame.pack(side=tk.TOP)
 
@@ -122,11 +122,11 @@ class App(tk.Tk):
         self.test_button = ttk.Button(button_frame, text='Test Autograder',
                                       command=self.test)
         self.test_button.pack(side=tk.LEFT, padx=4, pady=10)
-#        self.test_button["state"] = "disabled"
+#       self.test_button["state"] = "disabled"
 
         self.build_button = ttk.Button(button_frame, text='Build Autograder',
                                        command=self.build)
-#        self.build_button["state"] = "disabled"
+#       self.build_button["state"] = "disabled"
         self.build_button.pack(side=tk.LEFT, padx=4, pady=10)
 
         button_frame.pack(side=tk.TOP)
@@ -144,6 +144,7 @@ class App(tk.Tk):
     def test(self):
         autograder_folder = self.grader_path_text.get("1.0", 'end-1c')
         sample_folder = self.sample_path_text.get("1.0", 'end-1c')
+        os.chdir(autograder_folder)
         result_json_loc, code = build_utils.test_autograder(autograder_folder,
                                                             sample_folder)
         if code == 0:
@@ -155,6 +156,7 @@ class App(tk.Tk):
     def build(self):
         autograder_folder = self.grader_path_text.get("1.0", 'end-1c')
         autograder_path = Path(autograder_folder)
+        os.chdir(autograder_folder)
         name = 'autograder_' + str(autograder_path.name) + ".zip"
         zipfile = fd.asksaveasfilename(filetypes=[("Zip file", ".zip")],
                                        initialdir=autograder_folder,
@@ -169,7 +171,7 @@ class App(tk.Tk):
             self.grader_path_text.config(state=tk.NORMAL)
             self.grader_path_text.delete(1.0, "end")
             self.grader_path_text.insert(1.0, folder)
-            self.grader_path_text.config(state=tk.DISABLED)
+#           self.grader_path_text.config(state=tk.DISABLED)
 
             p = Path(folder)
             possible_sample = p / 'sample'
@@ -180,7 +182,7 @@ class App(tk.Tk):
             self.sample_path_text.config(state=tk.NORMAL)
             self.sample_path_text.delete(1.0, "end")
             self.sample_path_text.insert(1.0, str(possible_sample))
-            self.sample_path_text.config(state=tk.DISABLED)
+#           self.sample_path_text.config(state=tk.DISABLED)
 
     def select_new_autograder(self):
         dest = fd.askdirectory(title="Select Autograder Folder Location",
@@ -196,7 +198,7 @@ class App(tk.Tk):
             self.sample_path_text.config(state=tk.NORMAL)
             self.sample_path_text.delete(1.0, "end")
             self.sample_path_text.insert(1.0, folder)
-            self.sample_path_text.config(state=tk.DISABLED)
+#           self.sample_path_text.config(state=tk.DISABLED)
 
 
 if __name__ == "__main__":
