@@ -97,15 +97,26 @@ def build_zip(autograder_folder, zip_location):
 
     zip_file = zipfile.ZipFile(zip_location, mode='w')
 
+    # Use the existing config file or automatically generate one.
     config_path = Path(autograder_folder) / 'config.ini'
-    if not config_path.exists():
-        logging.error(f"Missing file: {config_path}")
-        return
-    zip_file.write(config_path, 'config.ini')
+    if config_path.exists():
+        zip_file.write(config_path, 'config.ini')
+        tests_path = Path(autograder_folder) / 'tests'
+        test_files = tests_path.glob('*')
+    else:
+        code_files = []
+        test_files = []
+        for filename in os.listdir(autograder_folder):
+            if filename.startswith("test_") or filename.endswith("_test.py"):
+                test_files.append(Path(filename))
+            elif filename.endswith(".py"):
+                code_files.append(filename)
+        code_files = ", ".join(code_files)
+        config = f"[SUBMIT]\ncode: {code_files}\ntests:\n"
+        zip_file.writestr("config.ini", config)
 
     # Set up the official tests folder...
-    tests_path = Path(autograder_folder) / 'tests'
-    for path in tests_path.glob('*'):
+    for path in test_files:
         logging.info(f"Adding {path.name} to zip file")
         zip_file.write(path, arcname=os.path.join('tests', path.name))
     zip_file.writestr(os.path.join('tests', '__init__.py'), '')
